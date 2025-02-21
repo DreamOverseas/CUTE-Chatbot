@@ -23,8 +23,7 @@ const CuteChatbot = () => {
     <div>
       {/* Button to open */}
       <button
-        className="btn btn-primary rounded-circle position-fixed"
-        style={{ bottom: '20px', right: '20px', width: '60px', height: '60px' }}
+        className="btn btn-primary rounded-circle position-fixed bottom-5 right-5 w-16 h-16"
         onClick={() => setOpen(!open)}
       >
         <i className="bi bi-chat-dots-fill" style={{ fontSize: '1.5rem' }}></i>
@@ -33,7 +32,7 @@ const CuteChatbot = () => {
       {/* Inner components here */}
       {open && (
         <div
-          className="card position-fixed bottom-24 right-5 w-72 shadow-md"
+          className="card position-fixed bottom-24 right-5 w-96 shadow-md"
         >
           {/* In-window component */}
           <h1>Hello world</h1>
