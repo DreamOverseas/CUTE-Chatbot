@@ -23,8 +23,7 @@ const CuteChatbot = () => {
     <div>
       {/* Button to open */}
       <button
-        className="btn btn-primary rounded-circle position-fixed"
-        style={{ bottom: '20px', right: '20px', width: '60px', height: '60px' }}
+        className="btn btn-primary rounded-circle position-fixed bottom-5 right-5 w-16 h-16"
         onClick={() => setOpen(!open)}
       >
         <i className="bi bi-chat-dots-fill" style={{ fontSize: '1.5rem' }}></i>
@@ -33,17 +32,12 @@ const CuteChatbot = () => {
       {/* Inner components here */}
       {open && (
         <div
-          className="card position-fixed"
-          style={{
-            bottom: '90px',
-            right: '20px',
-            width: '300px',
-            boxShadow: '0px 0px 10px rgba(0,0,0,0.2)'
-          }}
+          className="card position-fixed bottom-24 right-5 w-96 min-h-3/4 max-h-3/4 shadow-md"
         >
           {/* In-window component */}
           <h1>Hello world</h1>
           <p>, I love RUSTTTTTT! This is the sample chatpage should be.</p>
+          <input type="text" id="user message" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 absolute inset-x-0 bottom-2 left-2 right-2" placeholder="Write a messager..." required />
         </div>
       )}
     </div>
