@@ -33,13 +33,7 @@ const CuteChatbot = () => {
       {/* Inner components here */}
       {open && (
         <div
-          className="card position-fixed"
-          style={{
-            bottom: '90px',
-            right: '20px',
-            width: '300px',
-            boxShadow: '0px 0px 10px rgba(0,0,0,0.2)'
-          }}
+          className="card position-fixed bottom-24 right-5 w-72 shadow-md"
         >
           {/* In-window component */}
           <h1>Hello world</h1>
