@@ -32,7 +32,7 @@ const CuteChatbot = () => {
       {/* Inner components here */}
       {open && (
         <div
-          className="card position-fixed bottom-24 right-5 w-96 min-h-3/4 max-h-3/4 shadow-md"
+          className="card position-fixed bottom-24 right-5 min-h-3/4 max-h-3/4 shadow-md w-full max-w-[90%] sm:max-w-md h-[75vh] sm:h-96"
         >
           {/* In-window component */}
           <h1>Hello world</h1>
