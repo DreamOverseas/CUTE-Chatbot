@@ -32,11 +32,11 @@ const CuteChatbot = () => {
       {/* Inner components here */}
       {open && (
         <div
-          id="chat card" className="card position-fixed bottom-24 right-5 min-h-3/4 max-h-3/4 shadow-md max-w-[90%] h-[75vh] lg:w-1/3 lg:h-96"
+          id="chat card" className="card position-fixed bottom-24 right-5 min-h-3/4 max-h-3/4 shadow-md w-[90%] h-[75vh] lg:w-1/3 lg:h-96"
         >
           {/* In-window component */}
           <h1>Hello world</h1>
-          <div id="user message" className="border-2 border-solid border-blue-400 rounded-lg p-1">
+          <div id="user message" className="border-2 border-solid border-blue-400 rounded-lg p-1 w-2/3">
             <p>, I love RUSTTTTTT! This is the sample chatpage should be.</p>
           </div>
           <input type="text" id="user input" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 absolute inset-x-0 bottom-2 left-2 right-2" placeholder="Write a messager..." required />
