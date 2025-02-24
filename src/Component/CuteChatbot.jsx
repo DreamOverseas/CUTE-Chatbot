@@ -42,7 +42,7 @@ const CuteChatbot = () => {
         );
 
         if (!assistantResponse.ok) {
-          console.log("Assistant API res: ", assistantResponse); //TODO: Del for test purpose
+          console.err("Assistent API response error.");
           throw new Error("Failed to fetch assistant details");
         }
 
@@ -73,13 +73,19 @@ const CuteChatbot = () => {
       } catch (err) {
         console.error("Error initializing chatbot:", err);
       } finally {
-        console.log(`Assistant found: ${assistant}, and thread ${threadId} created.`); //TODO: Del for test purpose
+        
         setLoading(false);
       }
     };
 
     initializeChatbot();
   }, []);
+
+  const testButtonFunc = () => {
+    console.log("Assistant found:");
+    console.log(assistant);
+    console.log(`and thread ${threadId} created.`);
+  }
 
   return (
     <div>
@@ -102,7 +108,10 @@ const CuteChatbot = () => {
           (<p>We are getting your CUTE Chatbot ready, please wait...</p>)
           :
           ( // Main Display
-            <h1>Hello world</h1>
+            <div>
+              <h1>Hello world</h1>
+              <button onClick={testButtonFunc}> Test </button>   {/*TODO: Del for test purpose*/}
+            </div>
           )}
           <input type="text" id="user message" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 absolute inset-x-0 bottom-2 left-2 right-2" placeholder="Write a messager..." required />
         </div>
