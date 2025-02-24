@@ -35,11 +35,13 @@ const CuteChatbot = () => {
           <div className="flex-1 overflow-y-auto mb-2">
             {messages.map((msg, index) => (
               <div
-                key={index}
-                className="border-2 border-solid border-blue-400 rounded-lg p-2 w-fit max-w-2/3 ml-auto bg-blue-100 text-blue-900 my-1 break-words"
-              >
-                <p>{msg}</p>
+              key={index}
+              className="flex justify-end my-1"
+            >
+              <div className="border-2 border-blue-400 rounded-lg p-2 max-w-2/3 bg-blue-100 text-blue-900 break-words">
+                {msg}
               </div>
+            </div>
             ))}
           </div>
 
