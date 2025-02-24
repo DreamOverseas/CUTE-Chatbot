@@ -4,6 +4,15 @@
 
 // src/Components/CuteChatbot.js
 import { useState } from 'react';
+// import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+// import {
+//   MainContainer,
+//   ChatContainer,
+//   MessageList,
+//   Message,
+//   MessageInput,
+// } from "@chatscope/chat-ui-kit-react";
+
 
 const CuteChatbot = () => {
   const [open, setOpen] = useState(false);
