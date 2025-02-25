@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 const CuteChatbot = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [aiMessages, setAiMessages] = useState([]);
+  const [aiMessages, setAiMessages] = useState(["Good'ay. How can I help you today?"]);
   const [input, setInput] = useState("");
 
   const openaiApiUrl = import.meta.env.VITE_OPENAI_API_URL;
