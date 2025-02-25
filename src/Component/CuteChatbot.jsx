@@ -9,8 +9,9 @@ import { useState, useEffect } from 'react';
 const CuteChatbot = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [aiMessages, setAiMessages] = useState(["Good'ay. How can I help you today?"]);
+  const [aiMessages, setAiMessages] = useState(["您好，请问我有什么可以帮您的？Good'ay. How can I help you today?"]);
   const [input, setInput] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
 
   const openaiApiUrl = import.meta.env.VITE_OPENAI_API_URL;
   const openaiAsstId = import.meta.env.VITE_OPENAI_ASST_ID;
@@ -224,22 +225,44 @@ const CuteChatbot = () => {
     }
   };
 
+  // Modify the open button click handler to handle animations
+  const toggleChat = () => {
+    if (open) {
+      // Start the fade-out animation first
+      setIsVisible(false);
+      // Then close the chat after animation completes
+      setTimeout(() => {
+        setOpen(false);
+      }, 300); // Match this to your transition duration
+    } else {
+      // Open the chat first
+      setOpen(true);
+      // Then start the fade-in animation
+      setTimeout(() => {
+        setIsVisible(true);
+      }, 10); // Small delay to ensure DOM update
+    }
+  };
+
   return (
     <div>
       {/* Button to open */}
       <button
-        className="btn btn-primary rounded-circle position-fixed bottom-5 right-5 w-16 h-16"
-        onClick={() => setOpen(!open)}
+        className="btn btn-primary rounded-circle position-fixed bottom-5 right-5 w-16 h-16 transition-transform duration-300 ease-in-out transform hover:scale-110 hover:rotate-12 focus:outline-none"
+        onClick={toggleChat}
       >
         <i className="bi bi-chat-dots-fill" style={{ fontSize: '1.5rem' }}></i>
       </button>
 
+
       {/* Inner components here */}
       {open && (
         <div
-          id="chat card"
-          className="card position-fixed bottom-24 right-5 w-96 min-h-3/4 max-h-3/4 shadow-md"
-        >
+        id="chat card"
+        className={`card position-fixed bottom-24 right-5 w-96 max-w-[90%] min-h-3/4 max-h-3/4 shadow-md lg:w-1/3 transition-opacity duration-300 ease-in-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
           {/* In-window component */}
 
           {loading ?
@@ -247,7 +270,7 @@ const CuteChatbot = () => {
             :
             ( // Main Display
               <div>
-                <h1>Hello world</h1>
+                <h1>CUTE Chatbot</h1>
                 {/* <button onClick={testButtonFunc}> Test </button>   TODO: Del for test purpose */}
               </div>
             )}
