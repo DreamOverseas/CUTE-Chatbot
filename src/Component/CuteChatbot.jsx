@@ -20,7 +20,7 @@ const CuteChatbot = () => {
   // const deepseekApiKey   = import.meta.env.VITE_DEEPSEEK_API_KEY;
   // const deepseekModel    = import.meta.env.VITE_DEEPSEEK_MODEL;
 
-  const [assistant, setAssistant] = useState(null);
+  // const [assistant, setAssistant] = useState(null);
   const [threadId, setThreadId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [aiThinking, setAiThinking] = useState(false);
@@ -32,25 +32,25 @@ const CuteChatbot = () => {
         setLoading(true);
 
         // Assistant Detail - CUTE Chatbot (formerly DO Copilot)
-        const assistantResponse = await fetch(
-          `${openaiApiUrl}/v1/assistants/${openaiAsstId}`,
-          {
-            method: "GET",
-            headers: {
-              "Authorization": `Bearer ${openaiApiKey}`,
-              "Content-Type": "application/json",
-              "OpenAI-Beta": "assistants=v2",
-            },
-          }
-        );
+        // const assistantResponse = await fetch(
+        //   `${openaiApiUrl}/v1/assistants/${openaiAsstId}`,
+        //   {
+        //     method: "GET",
+        //     headers: {
+        //       "Authorization": `Bearer ${openaiApiKey}`,
+        //       "Content-Type": "application/json",
+        //       "OpenAI-Beta": "assistants=v2",
+        //     },
+        //   }
+        // );
 
-        if (!assistantResponse.ok) {
-          console.err("Assistent API response error.");
-          throw new Error("Failed to fetch assistant details");
-        }
+        // if (!assistantResponse.ok) {
+        //   console.err("Assistent API response error.");
+        //   throw new Error("Failed to fetch assistant details");
+        // }
 
-        const assistantData = await assistantResponse.json();
-        setAssistant(assistantData);
+        // const assistantData = await assistantResponse.json();
+        // setAssistant(assistantData);
 
         // New Thread
         const threadResponse = await fetch(
@@ -82,6 +82,7 @@ const CuteChatbot = () => {
     };
 
     initializeChatbot();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // const testButtonFunc = () => {
@@ -200,12 +201,12 @@ const CuteChatbot = () => {
 
           // Extract the latest AI message
           const latestAiMessage = messagesData.data
-            .filter((msg) => msg.role === "assistant")
-            .pop();
+            .filter((msg) => msg.role === "assistant")[0];
 
           if (latestAiMessage) {
             aiResponse = latestAiMessage.content[0].text.value;
             setAiMessages((prev) => [...prev, aiResponse]);
+            
             console.log("AI Response:", aiResponse);//TODO: Delete for test purpose
           }
         }
@@ -252,20 +253,32 @@ const CuteChatbot = () => {
             )}
           {/* Messages Container */}
           <div className="flex-1 overflow-y-auto mb-2">
-            {messages.map((msg, index) => (
-              <div key={index} className="flex justify-end my-1">
-                <div className="border-2 border-blue-400 rounded-lg p-2 max-w-2/3 bg-blue-100 text-blue-900 break-words">
-                  {msg}
-                </div>
-              </div>
-            ))}
-            {aiMessages.map((msg, index) => (
-              <div key={index} className="flex justify-start my-1">
-                <div className="border-2 border-gray-400 rounded-lg p-2 max-w-2/3 bg-gray-100 text-gray-900 break-words">
-                  {msg}
-                </div>
-              </div>
-            ))}
+            {(() => {
+              // Show combined mesaage alternately from CUTE's greetings settled at useState
+              const combined = [];
+              const maxLength = Math.max(aiMessages.length, messages.length);
+              for (let i = 0; i < maxLength; i++) {
+                if (i < aiMessages.length) {
+                  combined.push(
+                    <div key={`ai-${i}`} className="flex justify-start my-1">
+                      <div className="border-2 border-gray-400 rounded-lg p-2 max-w-2/3 bg-gray-100 text-gray-900 break-words">
+                        {aiMessages[i]}
+                      </div>
+                    </div>
+                  );
+                }
+                if (i < messages.length) {
+                  combined.push(
+                    <div key={`user-${i}`} className="flex justify-end my-1">
+                      <div className="border-2 border-blue-400 rounded-lg p-2 max-w-2/3 bg-blue-100 text-blue-900 break-words">
+                        {messages[i]}
+                      </div>
+                    </div>
+                  );
+                }
+              }
+              return combined;
+            })()}
           </div>
 
           {/* Input Field */}
