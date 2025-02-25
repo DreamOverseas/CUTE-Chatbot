@@ -8,6 +8,16 @@ import { useState, useEffect } from 'react';
 
 const CuteChatbot = () => {
   const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && input.trim()) {
+      // Add new message to state
+      setMessages([...messages, input]);
+      setInput(""); // Clear input field
+    }
+  };
 
   // Read .env
   const openaiApiUrl   = import.meta.env.VITE_OPENAI_API_URL;
@@ -81,11 +91,11 @@ const CuteChatbot = () => {
     initializeChatbot();
   }, []);
 
-  const testButtonFunc = () => {
-    console.log("Assistant found:");
-    console.log(assistant);
-    console.log(`and thread ${threadId} created.`);
-  }
+  // const testButtonFunc = () => {
+  //   console.log("Assistant found:");
+  //   console.log(assistant);
+  //   console.log(`and thread ${threadId} created.`);
+  // }
 
   return (
     <div>
@@ -100,6 +110,7 @@ const CuteChatbot = () => {
       {/* Inner components here */}
       {open && (
         <div
+          id="chat card"
           className="card position-fixed bottom-24 right-5 w-96 min-h-3/4 max-h-3/4 shadow-md"
         >
           {/* In-window component */}
@@ -110,10 +121,31 @@ const CuteChatbot = () => {
           ( // Main Display
             <div>
               <h1>Hello world</h1>
-              <button onClick={testButtonFunc}> Test </button>   {/*TODO: Del for test purpose*/}
+              {/* <button onClick={testButtonFunc}> Test </button>   TODO: Del for test purpose */}
             </div>
           )}
-          <input type="text" id="user message" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 absolute inset-x-0 bottom-2 left-2 right-2" placeholder="Write a messager..." required />
+          {/* Messages Container */}
+          <div className="flex-1 overflow-y-auto mb-2">
+            {messages.map((msg, index) => (
+              <div
+              key={index}
+              className="flex justify-end my-1"
+            >
+              <div className="border-2 border-blue-400 rounded-lg p-2 max-w-2/3 bg-blue-100 text-blue-900 break-words">
+                {msg}
+              </div>
+            </div>
+            ))}
+          </div>
+          {/* Input Field */}
+          <input
+            type="text"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-full"
+            placeholder="Write a message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
         </div>
       )}
     </div>
