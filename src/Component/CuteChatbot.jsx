@@ -9,18 +9,10 @@ import { useState, useEffect } from 'react';
 const CuteChatbot = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [aiMessages, setAiMessages] = useState([]);
   const [input, setInput] = useState("");
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && input.trim()) {
-      // Add new message to state
-      setMessages([...messages, input]);
-      setInput(""); // Clear input field
-    }
-  };
-
-  // Read .env
-  const openaiApiUrl   = import.meta.env.VITE_OPENAI_API_URL;
+  const openaiApiUrl = import.meta.env.VITE_OPENAI_API_URL;
   const openaiAsstId = import.meta.env.VITE_OPENAI_ASST_ID;
   const openaiApiKey     = import.meta.env.VITE_OPENAI_API_KEY;
   // const openaiModel      = import.meta.env.VITE_OPENAI_MODEL;
@@ -96,6 +88,136 @@ const CuteChatbot = () => {
   //   console.log(assistant);
   //   console.log(`and thread ${threadId} created.`);
   // }
+  // Send message to Assistant
+  const sendMessageToAssistant = async (userMessage) => {
+    if (!threadId) {
+      console.error("No thread ID found, cannot send message.");
+      return;
+    }
+
+    try {
+      // Add user message to chat
+      setMessages((prev) => [...prev, userMessage]);
+
+      // Send message to OpenAI API
+      const messageResponse = await fetch(
+        `${openaiApiUrl}/v1/threads/${threadId}/messages`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${openaiApiKey}`,
+            "Content-Type": "application/json",
+            "OpenAI-Beta": "assistants=v2",
+          },
+          body: JSON.stringify({
+            role: "user",
+            content: userMessage,
+          }),
+        }
+      );
+
+      if (!messageResponse.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      const messageData = await messageResponse.json();
+      console.log("Message sent:", messageData);
+
+      // Run the Assistant
+      const runResponse = await fetch(
+        `${openaiApiUrl}/v1/threads/${threadId}/runs`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${openaiApiKey}`,
+            "Content-Type": "application/json",
+            "OpenAI-Beta": "assistants=v2",
+          },
+          body: JSON.stringify({
+            assistant_id: openaiAsstId,
+          }),
+        }
+      );
+
+      if (!runResponse.ok) {
+        throw new Error("Failed to run assistant");
+      }
+
+      const runData = await runResponse.json();
+      console.log("Run started:", runData);
+
+      // Poll for completion
+      let runCompleted = false;
+      let aiResponse = "";
+
+      while (!runCompleted) {
+        await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait 2 seconds
+
+        const runStatusResponse = await fetch(
+          `${openaiApiUrl}/v1/threads/${threadId}/runs/${runData.id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${openaiApiKey}`,
+              "Content-Type": "application/json",
+              "OpenAI-Beta": "assistants=v2",
+            },
+          }
+        );
+
+        if (!runStatusResponse.ok) {
+          throw new Error("Failed to get run status");
+        }
+
+        const runStatusData = await runStatusResponse.json();
+        console.log("Run status:", runStatusData);
+
+        if (runStatusData.status === "completed") {
+          runCompleted = true;
+
+          // Fetch messages
+          const messagesResponse = await fetch(
+            `${openaiApiUrl}/v1/threads/${threadId}/messages`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${openaiApiKey}`,
+                "Content-Type": "application/json",
+                "OpenAI-Beta": "assistants=v2",
+              },
+            }
+          );
+
+          if (!messagesResponse.ok) {
+            throw new Error("Failed to fetch messages");
+          }
+
+          const messagesData = await messagesResponse.json();
+          console.log("Messages data:", messagesData);
+
+          // Extract the latest AI message
+          const latestAiMessage = messagesData.data
+            .filter((msg) => msg.role === "assistant")
+            .pop();
+
+          if (latestAiMessage) {
+            aiResponse = latestAiMessage.content[0].text.value;
+            setAiMessages((prev) => [...prev, aiResponse]);
+            console.log("AI Response:", aiResponse);
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Error sending message:", err);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && input.trim()) {
+      sendMessageToAssistant(input.trim());
+      setInput("");
+    }
+  };
 
   return (
     <div>
@@ -127,16 +249,21 @@ const CuteChatbot = () => {
           {/* Messages Container */}
           <div className="flex-1 overflow-y-auto mb-2">
             {messages.map((msg, index) => (
-              <div
-              key={index}
-              className="flex justify-end my-1"
-            >
-              <div className="border-2 border-blue-400 rounded-lg p-2 max-w-2/3 bg-blue-100 text-blue-900 break-words">
-                {msg}
+              <div key={index} className="flex justify-end my-1">
+                <div className="border-2 border-blue-400 rounded-lg p-2 max-w-2/3 bg-blue-100 text-blue-900 break-words">
+                  {msg}
+                </div>
               </div>
-            </div>
+            ))}
+            {aiMessages.map((msg, index) => (
+              <div key={index} className="flex justify-start my-1">
+                <div className="border-2 border-gray-400 rounded-lg p-2 max-w-2/3 bg-gray-100 text-gray-900 break-words">
+                  {msg}
+                </div>
+              </div>
             ))}
           </div>
+
           {/* Input Field */}
           <input
             type="text"
