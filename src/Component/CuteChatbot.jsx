@@ -4,8 +4,9 @@
 
 // src/Components/CuteChatbot.js
 import { useState, useEffect } from 'react';
-
 import useSpeechToText from 'react-hook-speech-to-text';
+
+import LanguageSelector from './LanguageSelector';
 
 const CuteChatbot = () => {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,8 @@ const CuteChatbot = () => {
   const [input, setInput] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false); // For the send button
+
+  const [currLang, setCurrLang] = useState('zh-CN'); // Language code in BCP-47 (e.g. en-US, zh-CN ...)
 
   const openaiApiUrl = import.meta.env.VITE_OPENAI_API_URL;
   const openaiAsstId = import.meta.env.VITE_OPENAI_ASST_ID;
@@ -35,7 +38,7 @@ const CuteChatbot = () => {
       try {
         setLoading(true);
 
-        // Assistant Detail - CUTE Chatbot (formerly DO Copilot)
+        // Assistant Detail - CUTE Chatbot (formerly DO Copilot) TODO: Commented for API Update
         // const assistantResponse = await fetch(
         //   `${openaiApiUrl}/v1/assistants/${openaiAsstId}`,
         //   {
@@ -99,11 +102,12 @@ const CuteChatbot = () => {
     stopSpeechToText,
   } = useSpeechToText({
     speechRecognitionProperties: {
+      lang: currLang,
       interimResults: true // Allows for displaying real-time speech results
     },
     googleCloudRecognitionConfig: {
-      languageCode: 'en-US',
-      alternativeLanguageCodes: ['zh-CN'],
+      languageCode: currLang,
+      alternativeLanguageCodes: ['en-US', 'zh-CN'],
     },
     continuous: true,
     maxAlternatives: 1,
@@ -132,12 +136,6 @@ const CuteChatbot = () => {
   };
 
   if (error) { console.error(error) };
-
-  // const testButtonFunc = () => {
-  //   console.log("Assistant found:");
-  //   console.log(assistant);
-  //   console.log(`and thread ${threadId} created.`);
-  // }
 
   // Send message to Assistant
   const sendMessageToAssistant = async (userMessage) => {
@@ -271,7 +269,7 @@ const CuteChatbot = () => {
     setInput("");
     if (isRecording) {
       stopSpeechToText();
-    } 
+    }
   }
 
   const handleKeyDown = (e) => {
@@ -323,10 +321,13 @@ const CuteChatbot = () => {
             (<p>We are getting your CUTE Chatbot ready, please wait...</p>)
             :
             ( // Main Display
-              <div>
-                <h1>CUTE Chatbot</h1>
-                {/* <button onClick={testButtonFunc}> Test </button>   TODO: Del for test purpose */}
+              <div className="flex items-center">
+                <h1 className="mx-auto">CUTE Chatbot</h1>
+                <div className="right-0">
+                  <LanguageSelector currLang={currLang} setCurrLang={setCurrLang} />
+                </div>
               </div>
+
             )}
           {/* Messages Container */}
           <div className="flex-1 overflow-y-auto mb-2">
