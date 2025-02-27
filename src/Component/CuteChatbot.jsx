@@ -22,6 +22,7 @@ const CuteChatbot = () => {
   // const deepseekApiUrl   = import.meta.env.VITE_DEEPSEEK_API_URL;
   // const deepseekApiKey   = import.meta.env.VITE_DEEPSEEK_API_KEY;
   // const deepseekModel    = import.meta.env.VITE_DEEPSEEK_MODEL;
+  const googleApiKey = import.meta.env.VITE_GOOGLE_API;
 
   // const [assistant, setAssistant] = useState(null);
   const [threadId, setThreadId] = useState(null);
@@ -88,33 +89,40 @@ const CuteChatbot = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 使用 react-hook-speech-to-text 进行语音识别
+  // Configs - USE react-hook-speech-to-text / Google Cloud API to TTS
   const {
     error,
-    interimResult,  // 语音识别的临时结果
-    isRecording,    // 当前是否在录制
-    results,        // 已确认的识别结果
+    isRecording,
+    results,
+    interimResult,
     startSpeechToText,
     stopSpeechToText,
   } = useSpeechToText({
+    speechRecognitionProperties: {
+      interimResults: true // Allows for displaying real-time speech results
+    },
+    googleCloudRecognitionConfig: {
+      languageCode: 'en-US',
+      alternativeLanguageCodes: ['zh-CN'],
+    },
     continuous: true,
-    useLegacyResults: false,
+    maxAlternatives: 1,
+    crossBrowser: true,
+    googleApiKey: "AIzaSyDaM3P5TpuCxQOg1kHCqDyXM6-Ii4m6qHQ",
+    useLegacyResults: false
   });
 
-  // 监听 interimResult 与 results，当语音识别返回内容时实时更新输入框
+  // Monitor interimResult / results，update when awaked
   useEffect(() => {
-    // 如果有临时结果，则更新输入框内容
     if (interimResult) {
       setInput(interimResult);
     }
-    // 如果没有临时结果，但有最终识别结果（例如录制结束后），则取最新一条结果更新
     else if (results.length > 0) {
       const lastTranscript = results[results.length - 1].transcript;
       setInput(lastTranscript);
     }
   }, [interimResult, results]);
 
-  // 点击录制按钮时的处理函数
   const handleRecordClick = () => {
     if (!isRecording) {
       startSpeechToText();
