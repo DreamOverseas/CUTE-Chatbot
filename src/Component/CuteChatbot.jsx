@@ -108,7 +108,7 @@ const CuteChatbot = () => {
     continuous: true,
     maxAlternatives: 1,
     crossBrowser: true,
-    googleApiKey: "AIzaSyDaM3P5TpuCxQOg1kHCqDyXM6-Ii4m6qHQ",
+    googleApiKey: googleApiKey,
     useLegacyResults: false
   });
 
@@ -269,6 +269,9 @@ const CuteChatbot = () => {
   const sendNow = () => {
     sendMessageToAssistant(input.trim());
     setInput("");
+    if (isRecording) {
+      stopSpeechToText();
+    } 
   }
 
   const handleKeyDown = (e) => {
@@ -363,7 +366,7 @@ const CuteChatbot = () => {
                   type="text"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full opacity-50 cursor-not-allowed"
                   placeholder="Thinking Hard..."
-                  value={input}
+                  value="Thinking Hard..."
                   disabled
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
