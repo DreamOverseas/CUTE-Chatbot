@@ -14,7 +14,8 @@ const CuteChatbot = () => {
   const [aiMessages, setAiMessages] = useState(["您好，请问我有什么可以帮您的？Good'ay. How can I help you today?"]);
   const [input, setInput] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [isHovered, setIsHovered] = useState(false); // For the send button
+  const [isSttHovered, setIsSttHovered] = useState(false);
+  const [isSendHovered, setIsSendHovered] = useState(false);
 
   const [currLang, setCurrLang] = useState('zh-CN'); // Language code in BCP-47 (e.g. en-US, zh-CN ...)
 
@@ -393,50 +394,41 @@ const CuteChatbot = () => {
                 disabled
                 className="p-2 text-green-500 cursor-not-allowed border-0 outline-none focus:outline-none"
               >
-                <i className="bi bi-send-check-fill text-xl"></i>
+                <i className="ml-2 mr-2 bi bi-send-check-fill text-xl"></i>
               </button>
             </div>
           ) : (
             <div className="flex items-center">
-              {/* Start STT */}
-              <button
-                onClick={handleRecordClick}
-                className={`mr-2 focus:outline-none ${isRecording ? 'text-red-500' : 'text-gray-500'}`}
-              >
-                <i className={isRecording ? "bi bi-record-circle-fill" : "bi bi-record-circle"}></i>
-              </button>
-              {/* Input box */}
-              <input
-                type="text"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-full"
-                placeholder="Write a message..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-              />
-              {/* Send Button */}
-              <button
-                onClick={sendNow}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                className="p-2 text-gray-600 hover:text-blue-600 transition-colors border-0 outline-none focus:outline-none"
-              >
-                {isHovered ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    fill="currentColor"
-                    className="bi bi-send-fill text-xl"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z" />
-                  </svg>
-                ) : (
-                  <i className="bi bi-send text-xl"></i>
-                )}
-              </button>
-            </div>
+          {/* Start STT */}
+          <button
+            onClick={handleRecordClick}
+            className={`mr-2 focus:outline-none ${isRecording ? 'text-red-500' : (isSttHovered ? 'text-blue-600' : 'text-gray-500')}`}
+            onMouseEnter={() => setIsSttHovered(true)}
+            onMouseLeave={() => setIsSttHovered(false)}
+          >
+            <i className={isRecording||isSttHovered ? "bi bi-record-circle-fill" : "bi bi-record-circle"}></i>
+          </button>
+          
+          {/* Input box */}
+          <input
+            type="text"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-full"
+            placeholder="Write a message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+
+          {/* Send Button */}
+          <button
+            onClick={sendNow}
+            className={`ml-2 focus:outline-none ${isSendHovered ? 'text-blue-600' : 'text-gray-500'}`}
+            onMouseEnter={() => setIsSendHovered(true)}
+            onMouseLeave={() => setIsSendHovered(false)}
+          >
+            <i className={isSendHovered ? "bi bi-send-fill" : "bi bi-send"}></i>
+          </button>
+        </div>
           )}
         </div>
       )}
