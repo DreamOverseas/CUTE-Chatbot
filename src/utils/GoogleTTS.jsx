@@ -44,9 +44,6 @@ export async function speakWithGoogle(text, locale) {
 
     const data = await response.json();
 
-    console.log("Google TTS Returns:");
-    console.log(data);
-
     if (data.audioContent) {
       // Encode the base64 Data URI into play-able sudio
       currentAudio = new Audio("data:audio/mp3;base64," + data.audioContent);
