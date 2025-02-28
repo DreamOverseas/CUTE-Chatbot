@@ -14,7 +14,8 @@ const CuteChatbot = () => {
   const [aiMessages, setAiMessages] = useState(["您好，请问我有什么可以帮您的？Good'ay. How can I help you today?"]);
   const [input, setInput] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [isHovered, setIsHovered] = useState(false); // For the send button
+  const [isSttHovered, setIsSttHovered] = useState(false);
+  const [isSendHovered, setIsSendHovered] = useState(false);
 
   const [currLang, setCurrLang] = useState('zh-CN'); // Language code in BCP-47 (e.g. en-US, zh-CN ...)
 
@@ -401,9 +402,11 @@ const CuteChatbot = () => {
           {/* Start STT */}
           <button
             onClick={handleRecordClick}
-            className={`mr-2 focus:outline-none ${isRecording ? 'text-red-500' : 'text-gray-500'}`}
+            className={`mr-2 focus:outline-none ${isRecording ? 'text-red-500' : (isSttHovered ? 'text-blue-600' : 'text-gray-500')}`}
+            onMouseEnter={() => setIsSttHovered(true)}
+            onMouseLeave={() => setIsSttHovered(false)}
           >
-            <i className={isRecording ? "bi bi-record-circle-fill" : "bi bi-record-circle"}></i>
+            <i className={isRecording||isSttHovered ? "bi bi-record-circle-fill" : "bi bi-record-circle"}></i>
           </button>
           
           {/* Input box */}
@@ -419,11 +422,11 @@ const CuteChatbot = () => {
           {/* Send Button */}
           <button
             onClick={sendNow}
-            className={`ml-2 focus:outline-none ${isHovered ? 'text-blue-600' : 'text-gray-500'}`}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            className={`ml-2 focus:outline-none ${isSendHovered ? 'text-blue-600' : 'text-gray-500'}`}
+            onMouseEnter={() => setIsSendHovered(true)}
+            onMouseLeave={() => setIsSendHovered(false)}
           >
-            <i className={isHovered ? "bi bi-send-fill" : "bi bi-send"}></i>
+            <i className={isSendHovered ? "bi bi-send-fill" : "bi bi-send"}></i>
           </button>
         </div>
           )}
