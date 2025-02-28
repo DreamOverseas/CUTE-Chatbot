@@ -5,6 +5,7 @@
 // src/Components/CuteChatbot.js
 import { useState, useEffect } from 'react';
 import useSpeechToText from 'react-hook-speech-to-text';
+import { useSpeechSynthesis } from 'react-speech-kit';
 
 import LanguageSelector from './LanguageSelector';
 
@@ -17,6 +18,9 @@ const CuteChatbot = () => {
   const [isHovered, setIsHovered] = useState(false); // For the send button
 
   const [currLang, setCurrLang] = useState('zh-CN'); // Language code in BCP-47 (e.g. en-US, zh-CN ...)
+
+  const { speak, voices } = useSpeechSynthesis({});            // Voice Synthesis using Web Speech API
+  const selectedVoice = voices.find((voice) => voice.lang === currLang);
 
   const openaiApiUrl = import.meta.env.VITE_OPENAI_API_URL;
   const openaiAsstId = import.meta.env.VITE_OPENAI_ASST_ID;
@@ -253,6 +257,7 @@ const CuteChatbot = () => {
           if (latestAiMessage) {
             aiResponse = latestAiMessage.content[0].text.value;
             setAiMessages((prev) => [...prev, aiResponse]);
+            speak({ text: aiResponse, voice: selectedVoice });
 
             console.log("AI Response:", aiResponse);//TODO: Delete for test purpose
           }
