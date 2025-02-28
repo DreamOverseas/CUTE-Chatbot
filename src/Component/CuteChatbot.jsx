@@ -8,6 +8,9 @@ import useSpeechToText from 'react-hook-speech-to-text';
 import { useSpeechSynthesis } from 'react-speech-kit';
 
 import LanguageSelector from './LanguageSelector';
+import { speakWithGoogle } from '../utils/GoogleTTS';
+
+let useGoogleTTS = false; // configure if Google TTS is being used
 
 const CuteChatbot = () => {
   const [open, setOpen] = useState(false);
@@ -142,6 +145,16 @@ const CuteChatbot = () => {
 
   if (error) { console.error(error) };
 
+  // Speaks out a text with current settings
+  const letBotSpeak = (script, locale) => {
+    if (useGoogleTTS) {
+      speakWithGoogle(script, locale)
+    }
+    else {
+      speak({ text: script, voice: selectedVoice });
+    }
+  }
+
   // Send message to Assistant
   const sendMessageToAssistant = async (userMessage) => {
     if (!threadId) {
@@ -176,8 +189,7 @@ const CuteChatbot = () => {
         throw new Error("Failed to send message");
       }
 
-      const messageData = await messageResponse.json();
-      console.log("Message sent:", messageData); //TODO: Delete for test purpose
+      // const messageData = await messageResponse.json();
 
       // Run the Assistant
       const runResponse = await fetch(
@@ -200,7 +212,6 @@ const CuteChatbot = () => {
       }
 
       const runData = await runResponse.json();
-      console.log("Run started:", runData);//TODO: Delete for test purpose
 
       // Poll for completion
       let runCompleted = false;
@@ -226,7 +237,6 @@ const CuteChatbot = () => {
         }
 
         const runStatusData = await runStatusResponse.json();
-        console.log("Run status:", runStatusData);//TODO: Delete for test purpose
 
         if (runStatusData.status === "completed") {
           runCompleted = true;
@@ -249,7 +259,6 @@ const CuteChatbot = () => {
           }
 
           const messagesData = await messagesResponse.json();
-          console.log("Messages data:", messagesData);//TODO: Delete for test purpose
 
           // Extract the latest AI message
           const latestAiMessage = messagesData.data
@@ -258,9 +267,7 @@ const CuteChatbot = () => {
           if (latestAiMessage) {
             aiResponse = latestAiMessage.content[0].text.value;
             setAiMessages((prev) => [...prev, aiResponse]);
-            speak({ text: aiResponse, voice: selectedVoice });
-
-            console.log("AI Response:", aiResponse);//TODO: Delete for test purpose
+            letBotSpeak(aiResponse, currLang);
           }
         }
       }
