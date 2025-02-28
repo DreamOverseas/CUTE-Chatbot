@@ -3,7 +3,7 @@ const googleApiKey = import.meta.env.VITE_GOOGLE_API;
 let currentAudio = null;
 
 /**
- * 停止当前正在播放的音频
+ * Stop any playing audio from this util component
  */
 export function stopGoogleTTS() {
   if (currentAudio) {
@@ -14,16 +14,16 @@ export function stopGoogleTTS() {
 }
 
 /**
- * 根据传入的文本和 locale，通过 Google Cloud Text-to-Speech API 合成语音并立即播放
- * @param {string} text - 要转换为语音的文本
- * @param {string} locale - BCP-47 格式的语言代码，例如 'en-AU'、'zh-CN'等
+ * Based on the passed-in text and locale code，Synthesize audio through Google Cloud Text-to-Speech API and play immediately.
+ * Note: Calling this would stop any playing Audio from this util.
+ * @param {string} text - Script to read-out
+ * @param {string} locale - BCP-47 language code, like 'en-AU','zh-CN', 'ja-JP' ...
  */
 export async function speakWithGoogle(text, locale) {
     stopGoogleTTS();
 
   const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${googleApiKey}`;
 
-  // 构造请求体
   const requestBody = {
     input: { text },
     voice: {
@@ -48,7 +48,7 @@ export async function speakWithGoogle(text, locale) {
     console.log(data);
 
     if (data.audioContent) {
-      // 使用 Data URI 构造音频源，并播放
+      // Encode the base64 Data URI into play-able sudio
       currentAudio = new Audio("data:audio/mp3;base64," + data.audioContent);
       currentAudio.play();
     } else {
@@ -63,7 +63,7 @@ export async function speakWithGoogle(text, locale) {
 export default {speakWithGoogle , stopGoogleTTS};
 
 
-/**  ======================= Demo usage of this util ==========================
+/**  ======================= Demo usage of this util ========================== (テスト成功)
  * 
  *    import { speakWithGoogle, stopGoogleTTS } from './utils/GoogleTTS';
  * 
