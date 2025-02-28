@@ -45,7 +45,7 @@ export async function speakWithGoogle(text, locale) {
     const data = await response.json();
 
     if (data.audioContent) {
-      // Encode the base64 Data URI into play-able sudio
+      // Encode the base64 Data URI into play-able audio
       currentAudio = new Audio("data:audio/mp3;base64," + data.audioContent);
       currentAudio.play();
     } else {
@@ -58,6 +58,7 @@ export async function speakWithGoogle(text, locale) {
 
 
 export default {speakWithGoogle , stopGoogleTTS};
+
 
 
 /**  ======================= Demo usage of this util ========================== (テスト成功)
