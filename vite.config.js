@@ -33,5 +33,12 @@ export default defineConfig({
       react: path.resolve('./node_modules/react'),
       'react-dom': path.resolve('./node_modules/react-dom')
     }
-  }
+  },
+  css: {
+    preprocessorOptions: {
+      css: {
+        additionalData: '@import "./src/index.css";',  // Force to include Tailwind
+      },
+    },
+  },
 })
