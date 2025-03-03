@@ -87,14 +87,15 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
         if (!threadResponse.ok) {
           throw new Error("Failed to create thread");
         }
-
-        const threadData = await threadResponse.json();
-        if (isMounted) setThreadId(threadData.id);
+        const ThreadContentType = threadResponse.headers.get("content-type");
+        if (threadResponse.status !== 204 && ThreadContentType && ThreadContentType.includes("application/json")) {
+          const threadData = await threadResponse.json();
+          if (isMounted) setThreadId(threadData.id);
+        }
 
       } catch (err) {
         console.error("Error initializing chatbot:", err);
       } finally {
-
         setLoading(false);
       }
     };
@@ -415,36 +416,36 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
             </div>
           ) : (
             <div className="flex items-center">
-          {/* Start STT */}
-          <button
-            onClick={handleRecordClick}
-            className={`mr-2 focus:outline-none ${isRecording ? 'text-red-500' : (isSttHovered ? 'text-blue-600' : 'text-gray-500')}`}
-            onMouseEnter={() => setIsSttHovered(true)}
-            onMouseLeave={() => setIsSttHovered(false)}
-          >
-            <i className={isRecording||isSttHovered ? "bi bi-record-circle-fill" : "bi bi-record-circle"}></i>
-          </button>
-          
-          {/* Input box */}
-          <input
-            type="text"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-full"
-            placeholder="Write a message..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
+              {/* Start STT */}
+              <button
+                onClick={handleRecordClick}
+                className={`mr-2 focus:outline-none ${isRecording ? 'text-red-500' : (isSttHovered ? 'text-blue-600' : 'text-gray-500')}`}
+                onMouseEnter={() => setIsSttHovered(true)}
+                onMouseLeave={() => setIsSttHovered(false)}
+              >
+                <i className={isRecording || isSttHovered ? "bi bi-record-circle-fill" : "bi bi-record-circle"}></i>
+              </button>
 
-          {/* Send Button */}
-          <button
-            onClick={sendNow}
-            className={`ml-2 focus:outline-none ${isSendHovered ? 'text-blue-600' : 'text-gray-500'}`}
-            onMouseEnter={() => setIsSendHovered(true)}
-            onMouseLeave={() => setIsSendHovered(false)}
-          >
-            <i className={isSendHovered ? "bi bi-send-fill" : "bi bi-send"}></i>
-          </button>
-        </div>
+              {/* Input box */}
+              <input
+                type="text"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-full"
+                placeholder="Write a message..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+
+              {/* Send Button */}
+              <button
+                onClick={sendNow}
+                className={`ml-2 focus:outline-none ${isSendHovered ? 'text-blue-600' : 'text-gray-500'}`}
+                onMouseEnter={() => setIsSendHovered(true)}
+                onMouseLeave={() => setIsSendHovered(false)}
+              >
+                <i className={isSendHovered ? "bi bi-send-fill" : "bi bi-send"}></i>
+              </button>
+            </div>
           )}
         </div>
       )}
