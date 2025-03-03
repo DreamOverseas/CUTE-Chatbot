@@ -1,7 +1,7 @@
 {
   "name": "@dreamoverseas/cute-chatbot",
   "private": false,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "main": "dist/CuteChatbot.js",
   "module": "dist/CuteChatbot.js",
