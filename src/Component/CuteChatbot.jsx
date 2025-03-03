@@ -101,7 +101,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
     };
 
     initializeChatbot();
-    return () => (isMounted = false);
+    return () => {isMounted = false};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -164,7 +164,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
   const sendMessageToAssistant = async (userMessage) => {
     if (!threadId) {
       console.error("No thread ID found, cannot send message.");
-      return (<p>No thread ID found</p>);
+      return;
     }
     // Start thinking
     setAiThinking(true);
