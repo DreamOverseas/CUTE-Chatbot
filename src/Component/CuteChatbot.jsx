@@ -35,12 +35,14 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
 
   // const [assistant, setAssistant] = useState(null);
   const [threadId, setThreadId] = useState(null);
-  const [/* assistant */, setAssistant] = useState(null);
+  // const [assistant, setAssistant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [aiThinking, setAiThinking] = useState(false);
 
   // Loading all nessesary data
   useEffect(() => {
+    if (!googleApiKey || !openaiApiKey || !openaiAsstId || !openaiApiUrl) return (<p>Prop loading...</p>);
+    let isMounted = true;
     const initializeChatbot = async () => {
       console.log("Your assistant is ready.");
       console.log(`current props: openAI URL- ${openaiApiUrl} openAI Asst - ${openaiAsstId}`);
@@ -48,25 +50,25 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
         setLoading(true);
 
         // Assistant Detail - CUTE Chatbot (formerly DO Copilot) TODO: Commented for API Update
-        const assistantResponse = await fetch(
-          `${openaiApiUrl}/v1/assistants/${openaiAsstId}`,
-          {
-            method: "GET",
-            headers: {
-              "Authorization": `Bearer ${openaiApiKey}`,
-              "Content-Type": "application/json",
-              "OpenAI-Beta": "assistants=v2",
-            },
-          }
-        );
+        // const assistantResponse = await fetch(
+        //   `${openaiApiUrl}/v1/assistants/${openaiAsstId}`,
+        //   {
+        //     method: "GET",
+        //     headers: {
+        //       "Authorization": `Bearer ${openaiApiKey}`,
+        //       "Content-Type": "application/json",
+        //       "OpenAI-Beta": "assistants=v2",
+        //     },
+        //   }
+        // );
 
-        if (!assistantResponse.ok) {
-          console.error("Assistent API response error.");
-          throw new Error("Failed to fetch assistant details");
-        }
+        // if (!assistantResponse.ok) {
+        //   console.error("Assistent API response error.");
+        //   throw new Error("Failed to fetch assistant details");
+        // }
 
-        const assistantData = await assistantResponse.json();
-        setAssistant(assistantData);
+        // const assistantData = await assistantResponse.json();
+        // if (isMounted) setAssistant(assistantData);
 
         // New Thread
         const threadResponse = await fetch(
@@ -87,7 +89,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
         }
 
         const threadData = await threadResponse.json();
-        setThreadId(threadData.id);
+        if (isMounted) setThreadId(threadData.id);
 
       } catch (err) {
         console.error("Error initializing chatbot:", err);
@@ -98,6 +100,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
     };
 
     initializeChatbot();
+    return () => (isMounted = false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -160,7 +163,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
   const sendMessageToAssistant = async (userMessage) => {
     if (!threadId) {
       console.error("No thread ID found, cannot send message.");
-      return;
+      return (<p>No thread ID found</p>);
     }
     // Start thinking
     setAiThinking(true);
