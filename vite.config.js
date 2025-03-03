@@ -8,4 +8,21 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  build: {
+    lib: {
+      entry: './src/Component/CuteChatbot.jsx', // Entry
+      name: 'CUTE Chatbot',
+      fileName: 'CuteChatbot',
+      formats: ['es', 'cjs'],
+    },
+    rollupOptions: {
+      external: ['react', 'react-dom'],
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        },
+      },
+    },
+  },
 })

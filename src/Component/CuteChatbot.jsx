@@ -12,7 +12,8 @@ import { speakWithGoogle } from '../utils/GoogleTTS';
 
 let useGoogleTTS = false; // configure if Google TTS is being used
 
-const CuteChatbot = () => {
+// eslint-disable-next-line react/prop-types
+const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_api_key }) => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [aiMessages, setAiMessages] = useState(["您好，请问我有什么可以帮您的？Good'ay. How can I help you today?"]);
@@ -26,14 +27,15 @@ const CuteChatbot = () => {
   const { speak, voices } = useSpeechSynthesis({});            // Voice Synthesis using Web Speech API
   const selectedVoice = voices.find((voice) => voice.lang === currLang);
 
-  const openaiApiUrl = import.meta.env.VITE_OPENAI_API_URL;
-  const openaiAsstId = import.meta.env.VITE_OPENAI_ASST_ID;
-  const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
+  // Reading from props / env
+  const openaiApiUrl = openai_api_url || import.meta.env.VITE_OPENAI_API_URL;
+  const openaiAsstId = openai_asst_id || import.meta.env.VITE_OPENAI_ASST_ID;
+  const openaiApiKey = openai_api_key || import.meta.env.VITE_OPENAI_API_KEY;
   // const openaiModel      = import.meta.env.VITE_OPENAI_MODEL;
   // const deepseekApiUrl   = import.meta.env.VITE_DEEPSEEK_API_URL;
   // const deepseekApiKey   = import.meta.env.VITE_DEEPSEEK_API_KEY;
   // const deepseekModel    = import.meta.env.VITE_DEEPSEEK_MODEL;
-  const googleApiKey = import.meta.env.VITE_GOOGLE_API;
+  const googleApiKey = google_api_key || import.meta.env.VITE_GOOGLE_API;
 
   // const [assistant, setAssistant] = useState(null);
   const [threadId, setThreadId] = useState(null);
