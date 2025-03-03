@@ -41,7 +41,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
 
   // Loading all nessesary data
   useEffect(() => {
-    if (!googleApiKey || !openaiApiKey || !openaiAsstId || !openaiApiUrl) return (<p>Prop loading...</p>);
+    if (!googleApiKey || !openaiApiKey || !openaiAsstId || !openaiApiUrl) return;
     let isMounted = true;
     const initializeChatbot = async () => {
       console.log("Your assistant is ready.");
