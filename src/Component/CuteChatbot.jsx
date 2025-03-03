@@ -27,21 +27,15 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
   const { speak, voices } = useSpeechSynthesis({});            // Voice Synthesis using Web Speech API
   const selectedVoice = voices.find((voice) => voice.lang === currLang);
 
-  // Reading from props / envF
-  const openaiApiUrl = openai_api_url || import.meta.env.VITE_OPENAI_API_URL;
-  const openaiAsstId = openai_asst_id || import.meta.env.VITE_OPENAI_ASST_ID;
-  const openaiApiKey = openai_api_key || import.meta.env.VITE_OPENAI_API_KEY;
-  // const openaiModel      = import.meta.env.VITE_OPENAI_MODEL;
-  // const deepseekApiUrl   = import.meta.env.VITE_DEEPSEEK_API_URL;
-  // const deepseekApiKey   = import.meta.env.VITE_DEEPSEEK_API_KEY;
-  // const deepseekModel    = import.meta.env.VITE_DEEPSEEK_MODEL;
-  const googleApiKey = google_api_key || import.meta.env.VITE_GOOGLE_API;
-
-  //console.log(`OpenAI: ${openaiApiUrl}, ${openaiAsstId}, ${openaiApiKey}, Google: ${googleApiKey},`);
+  // Reading from props only
+  const openaiApiUrl = openai_api_url;
+  const openaiAsstId = openai_asst_id;
+  const openaiApiKey = openai_api_key;
+  const googleApiKey = google_api_key;
 
   // const [assistant, setAssistant] = useState(null);
   const [threadId, setThreadId] = useState(null);
-  const [assistant, setAssistant] = useState(null);
+  const [/* assistant */, setAssistant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [aiThinking, setAiThinking] = useState(false);
 

@@ -12,6 +12,16 @@ import CuteChatbot from './Component/CuteChatbot.jsx';
 function App() {
   const [count, setCount] = useState(0)
 
+    // Reading from env
+    const openaiApiUrl = import.meta.env.VITE_OPENAI_API_URL;
+    const openaiAsstId = import.meta.env.VITE_OPENAI_ASST_ID;
+    const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    // const openaiModel      = import.meta.env.VITE_OPENAI_MODEL;
+    // const deepseekApiUrl   = import.meta.env.VITE_DEEPSEEK_API_URL;
+    // const deepseekApiKey   = import.meta.env.VITE_DEEPSEEK_API_KEY;
+    // const deepseekModel    = import.meta.env.VITE_DEEPSEEK_MODEL;
+    const googleApiKey = import.meta.env.VITE_GOOGLE_API;
+
   return (
     <>
       <div>
@@ -36,7 +46,12 @@ function App() {
       </p>
 
 
-      <CuteChatbot />
+      <CuteChatbot 
+        openai_api_url={openaiApiUrl}
+        openai_asst_id={openaiAsstId}
+        openai_api_key={openaiApiKey}
+        google_api_key={googleApiKey}
+      />
     </>
   )
 }
