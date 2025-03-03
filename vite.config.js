@@ -12,7 +12,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/Component/CuteChatbot.jsx', // Entry
-      name: 'CUTE Chatbot',
+      name: 'CuteChatbot',
       fileName: 'CuteChatbot',
       formats: ['es', 'cjs'],
     },
