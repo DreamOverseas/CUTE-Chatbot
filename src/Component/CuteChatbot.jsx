@@ -10,7 +10,7 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import LanguageSelector from './LanguageSelector';
 import { speakWithGoogle } from '../utils/GoogleTTS';
 
-let useGoogleTTS = false; // configure if Google TTS is being used
+let useGoogleTTS = true; // configure if Google TTS is being used
 
 // eslint-disable-next-line react/prop-types
 const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_api_key }) => {
@@ -27,7 +27,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
   const { speak, voices } = useSpeechSynthesis({});            // Voice Synthesis using Web Speech API
   const selectedVoice = voices.find((voice) => voice.lang === currLang);
 
-  // Reading from props / env
+  // Reading from props / envF
   const openaiApiUrl = openai_api_url || import.meta.env.VITE_OPENAI_API_URL;
   const openaiAsstId = openai_asst_id || import.meta.env.VITE_OPENAI_ASST_ID;
   const openaiApiKey = openai_api_key || import.meta.env.VITE_OPENAI_API_KEY;
@@ -37,8 +37,11 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
   // const deepseekModel    = import.meta.env.VITE_DEEPSEEK_MODEL;
   const googleApiKey = google_api_key || import.meta.env.VITE_GOOGLE_API;
 
+  //console.log(`OpenAI: ${openaiApiUrl}, ${openaiAsstId}, ${openaiApiKey}, Google: ${googleApiKey},`);
+
   // const [assistant, setAssistant] = useState(null);
   const [threadId, setThreadId] = useState(null);
+  const [assistant, setAssistant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [aiThinking, setAiThinking] = useState(false);
 
@@ -49,25 +52,25 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
         setLoading(true);
 
         // Assistant Detail - CUTE Chatbot (formerly DO Copilot) TODO: Commented for API Update
-        // const assistantResponse = await fetch(
-        //   `${openaiApiUrl}/v1/assistants/${openaiAsstId}`,
-        //   {
-        //     method: "GET",
-        //     headers: {
-        //       "Authorization": `Bearer ${openaiApiKey}`,
-        //       "Content-Type": "application/json",
-        //       "OpenAI-Beta": "assistants=v2",
-        //     },
-        //   }
-        // );
+        const assistantResponse = await fetch(
+          `${openaiApiUrl}/v1/assistants/${openaiAsstId}`,
+          {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${openaiApiKey}`,
+              "Content-Type": "application/json",
+              "OpenAI-Beta": "assistants=v2",
+            },
+          }
+        );
 
-        // if (!assistantResponse.ok) {
-        //   console.error("Assistent API response error.");
-        //   throw new Error("Failed to fetch assistant details");
-        // }
+        if (!assistantResponse.ok) {
+          console.error("Assistent API response error.");
+          throw new Error("Failed to fetch assistant details");
+        }
 
-        // const assistantData = await assistantResponse.json();
-        // setAssistant(assistantData);
+        const assistantData = await assistantResponse.json();
+        setAssistant(assistantData);
 
         // New Thread
         const threadResponse = await fetch(
@@ -150,7 +153,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
   // Speaks out a text with current settings
   const letBotSpeak = (script, locale) => {
     if (useGoogleTTS) {
-      speakWithGoogle(script, locale)
+      speakWithGoogle(script, locale, googleApiKey)
     }
     else {
       speak({ text: script, voice: selectedVoice });
