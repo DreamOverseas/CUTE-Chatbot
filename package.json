@@ -1,8 +1,12 @@
 {
-  "name": "cute-chatbot",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@dreamoverseas/cute-chatbot",
+  "private": false,
+  "version": "1.0.1",
   "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
