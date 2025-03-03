@@ -9,6 +9,8 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  minify: false,
+  sourcemap: true,
   build: {
     lib: {
       entry: './src/Component/CuteChatbot.jsx', // Entry
