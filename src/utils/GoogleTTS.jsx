@@ -55,7 +55,6 @@ export async function speakWithGoogle(text, locale, googleApiKey) {
   }
 }
 
-
 export default {speakWithGoogle , stopGoogleTTS};
 
 

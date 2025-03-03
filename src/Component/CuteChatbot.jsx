@@ -102,8 +102,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
 
     initializeChatbot();
     return () => {isMounted = false};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [googleApiKey, openaiApiKey, openaiApiUrl, openaiAsstId]);
 
   // Configs - USE react-hook-speech-to-text / Google Cloud API to TTS
   const {
@@ -152,7 +151,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
 
   // Speaks out a text with current settings
   const letBotSpeak = (script, locale) => {
-    if (useGoogleTTS) {
+    if (useGoogleTTS && googleApiKey) {
       speakWithGoogle(script, locale, googleApiKey)
     }
     else {
