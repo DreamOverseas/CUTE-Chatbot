@@ -2,6 +2,11 @@
  * Initial sample, for reading Vite's env mainly
  */
 
+// Bootstrap Icons n tailwind// Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import '../index.css'
+
 // src/Components/CuteChatbot.js
 import { useState, useEffect } from 'react';
 import useSpeechToText from 'react-hook-speech-to-text';
