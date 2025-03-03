@@ -42,6 +42,8 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
   // Loading all nessesary data
   useEffect(() => {
     const initializeChatbot = async () => {
+      console.log("Your assistant is ready.");
+      console.log(`current props: openAI URL- ${openaiApiUrl} openAI Asst - ${openaiAsstId}`);
       try {
         setLoading(true);
 
