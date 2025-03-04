@@ -324,24 +324,24 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
       {/* Button to open chat */}
       <button
         onClick={toggleChat}
-        className="!bg-blue-500 !w-16 !h-16 !rounded-full flex items-center justify-center focus:outline-none transform hover:rotate-6 transition duration-300 fixed bottom-4 right-4 z-50"
+        className="!bg-blue-500 !w-16 !h-16 !rounded-full !flex !items-center !justify-center !focus:outline-none !transform !hover:rotate-6 !transition !duration-300 !fixed !bottom-4 !right-4 !z-50"
       >
-        <ChatIcon alt="Chat Now" className="w-8 h-8 fill-current !text-white" />
+        <ChatIcon alt="Chat Now" className="w-8 h-8 !fill-current !text-white" />
       </button>
 
       {/* Card Contents */}
       {open && (
         <div
           id="chat-card"
-          className={`fixed bottom-24 !right-5 w-[600px] !max-w-[90%] !min-h-[75%] !max-h-[75%] !bg-white !shadow-md !rounded-lg !flex !flex-col transition-opacity duration-300 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'
+          className={`!fixed !bottom-24 !right-5 !w-[600px] !max-w-[90%] !min-h-[75%] !max-h-[75%] !bg-white !shadow-md !rounded-lg !flex !flex-col !transition-opacity !duration-300 !ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'
             }`}
         >
           {/* Info msgs */}
           {loading ? (
-            <p className="p-4">We are getting your CUTE Chatbot ready, please wait...</p>
+            <p className="!p-4">We are getting your CUTE Chatbot ready, please wait...</p>
           ) : (
-            <div className="flex items-center justify-between p-4">
-              <h3 className="text-xl !font-bold">
+            <div className="!flex !items-center !justify-between !p-4">
+              <h3 className="!text-xl !font-bold">
                 {nickname}
               </h3>
               <div>
@@ -351,15 +351,15 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
           )}
 
           {/* Chat messgaes display area */}
-          <div className="flex-1 overflow-y-auto px-4">
+          <div className="!flex-1 !overflow-y-auto !px-4">
             {(() => {
               const combined = [];
               const maxLength = Math.max(aiMessages.length, messages.length);
               for (let i = 0; i < maxLength; i++) {
                 if (i < aiMessages.length) {
                   combined.push(
-                    <div key={`ai-${i}`} className="flex justify-start my-1">
-                      <div className="!border-2 !border-gray-400 !rounded-lg p-2 !max-w-2/3 !bg-gray-100 !text-gray-900 !break-words">
+                    <div key={`ai-${i}`} className="flex justify-start !my-1">
+                      <div className="!border-2 !border-gray-400 !rounded-lg !p-2 !max-w-2/3 !bg-gray-100 !text-gray-900 !break-words">
                         {aiMessages[i]}
                       </div>
                     </div>
@@ -367,8 +367,8 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
                 }
                 if (i < messages.length) {
                   combined.push(
-                    <div key={`user-${i}`} className="flex justify-end my-1">
-                      <div className="!border-2 !border-blue-400 r!ounded-lg !p-2 !max-w-2/3 !bg-blue-100 !text-blue-900 !break-words">
+                    <div key={`user-${i}`} className="!flex !justify-end !my-1">
+                      <div className="!border-2 !border-blue-400 !rounded-lg !p-2 !max-w-2/3 !bg-blue-100 !text-blue-900 !break-words">
                         {messages[i]}
                       </div>
                     </div>
@@ -386,7 +386,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
                 <div className="relative w-full">
                   <input
                     type="text"
-                    className="!bg-gray-50 border !border-gray-300 text-gray-900 text-sm rounded-lg !p-2.5 !w-full opacity-50 !cursor-not-allowed"
+                    className="!bg-gray-50 border !border-gray-300 !text-gray-900 !text-sm !rounded-lg !p-2.5 !w-full !opacity-50 !cursor-not-allowed"
                     placeholder="Thinking Hard..."
                     value="Thinking Hard..."
                     disabled
@@ -412,7 +412,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
                 </div>
                 <button
                   disabled
-                  className="p-2 !text-green-500 !cursor-not-allowed"
+                  className="!p-2 !text-green-500 !cursor-not-allowed"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -425,7 +425,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
                 </button>
               </div>
             ) : (
-              <div className="flex items-center">
+              <div className="!flex !items-center">
                 <button
                   onMouseDown={handleRecordStart}
                   onMouseUp={handleRecordStop}
@@ -472,7 +472,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
                 {/* Input field */}
                 <input
                   type="text"
-                  className="!bg-gray-50 border !border-gray-300 !text-gray-900 text-sm rounded-lg !focus:ring-blue-500 !focus:border-blue-500 block p-2.5 w-full"
+                  className="!bg-gray-50 border !border-gray-300 !text-gray-900 !text-sm !rounded-lg !focus:ring-blue-500 !focus:border-blue-500 !block !p-2.5 !w-full"
                   placeholder="Write a message..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
