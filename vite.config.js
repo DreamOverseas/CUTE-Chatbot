@@ -14,8 +14,6 @@ export default defineConfig({
     cssInjectedByJsPlugin()
   ],
   build: {
-    minify: false,
-    sourcemap: true,
     lib: {
       entry: './src/Component/CuteChatbot.jsx', // Entry
       name: 'CuteChatbot',

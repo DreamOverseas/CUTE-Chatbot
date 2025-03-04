@@ -9,6 +9,8 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import LanguageSelector from './LanguageSelector';
 import { speakWithGoogle } from '../utils/GoogleTTS';
 
+import ChatIcon  from '../assets/chat.svg?react'
+
 let useGoogleTTS = true; // configure if Google TTS is being used
 
 // eslint-disable-next-line react/prop-types
@@ -317,11 +319,11 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
     <div>
       {/* Button to open chat */}
       <button
-      onClick={toggleChat}
-      className="!bg-blue-500 !w-16 !h-16 !rounded-full flex items-center justify-center focus:outline-none transform hover:rotate-6 transition duration-300 fixed bottom-4 right-4 z-50"
-    >
-      <img src="/chat.svg" alt="Chat Icon" className="w-8 h-8 filter invert" />
-    </button>
+        onClick={toggleChat}
+        className="!bg-blue-500 !w-16 !h-16 !rounded-full flex items-center justify-center focus:outline-none transform hover:rotate-6 transition duration-300 fixed bottom-4 right-4 z-50"
+      >
+        <ChatIcon alt="Chat Now" className="w-8 h-8 filter invert" />
+      </button>
 
       {/* Card Contents */}
       {open && (
@@ -334,12 +336,14 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
           {loading ? (
             <p className="p-4">We are getting your CUTE Chatbot ready, please wait...</p>
           ) : (
-            <div className="flex items-center p-4">
-              <h1 className="mx-auto">CUTE Chatbot</h1>
-              <div>
-                <LanguageSelector currLang={currLang} setCurrLang={setCurrLang} />
+              <div className="flex items-center justify-between p-4">
+                <h3 className="text-xl font-bold">
+                  CUTE Chatbot
+                </h3>
+                <div>
+                  <LanguageSelector currLang={currLang} setCurrLang={setCurrLang} />
+                </div>
               </div>
-            </div>
           )}
 
           {/* Chat messgaes display area */}
