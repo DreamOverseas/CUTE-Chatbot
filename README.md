@@ -10,7 +10,7 @@ This React component integrated an AI-powered chatbot into your application. Bui
 - Google Cloud API Key
 
 ## Installation
-To install Cute Chatbot, run the following command:
+To install/update Cute Chatbot, run the following command:
 
 ```sh
 npm install @dreamoverseas/cute-chatbot

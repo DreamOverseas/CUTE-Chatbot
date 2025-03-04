@@ -17,7 +17,7 @@ let useGoogleTTS = true; // configure if Google TTS is being used
 const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_api_key }) => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [aiMessages, setAiMessages] = useState(["您好，请问我有什么可以帮您的？Good'ay. How can I help you today?"]);
+  const [aiMessages, setAiMessages] = useState(["您好，请问我有什么可以帮您的？ Good'ay. How can I help you today?"]);
   const [input, setInput] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [isSttHovered, setIsSttHovered] = useState(false);
