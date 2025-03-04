@@ -43,6 +43,7 @@ function App() {
 
 
       <CuteChatbot 
+        nickname="CUTE Chatbot"
         openai_api_url={openaiApiUrl}
         openai_asst_id={openaiAsstId}
         openai_api_key={openaiApiKey}

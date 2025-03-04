@@ -14,7 +14,7 @@ import ChatIcon from '../assets/chat.svg?react'
 let useGoogleTTS = true; // configure if Google TTS is being used
 
 // eslint-disable-next-line react/prop-types
-const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_api_key }) => {
+const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key, google_api_key }) => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [aiMessages, setAiMessages] = useState(["您好，请问我有什么可以帮您的？ Good'ay. How can I help you today?"]);
@@ -342,7 +342,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
           ) : (
             <div className="flex items-center justify-between p-4">
               <h3 className="text-xl !font-bold">
-                CUTE Chatbot
+                {nickname}
               </h3>
               <div>
                 <LanguageSelector currLang={currLang} setCurrLang={setCurrLang} />
