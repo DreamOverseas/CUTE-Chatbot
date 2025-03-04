@@ -337,7 +337,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
             <p className="p-4">We are getting your CUTE Chatbot ready, please wait...</p>
           ) : (
               <div className="flex items-center justify-between p-4">
-                <h3 className="text-xl font-bold">
+                <h3 className="text-xl !font-bold">
                   CUTE Chatbot
                 </h3>
                 <div>
@@ -355,7 +355,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                 if (i < aiMessages.length) {
                   combined.push(
                     <div key={`ai-${i}`} className="flex justify-start my-1">
-                      <div className="border-2 border-gray-400 rounded-lg p-2 max-w-2/3 bg-gray-100 text-gray-900 break-words">
+                      <div className="!border-2 !border-gray-400 !rounded-lg p-2 !max-w-2/3 !bg-gray-100 !text-gray-900 !break-words">
                         {aiMessages[i]}
                       </div>
                     </div>
@@ -364,7 +364,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                 if (i < messages.length) {
                   combined.push(
                     <div key={`user-${i}`} className="flex justify-end my-1">
-                      <div className="border-2 border-blue-400 rounded-lg p-2 max-w-2/3 bg-blue-100 text-blue-900 break-words">
+                      <div className="!border-2 !border-blue-400 r!ounded-lg !p-2 !max-w-2/3 !bg-blue-100 !text-blue-900 !break-words">
                         {messages[i]}
                       </div>
                     </div>
@@ -376,13 +376,13 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
           </div>
 
           {/* Input areas */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t !border-gray-200">
             {aiThinking ? (
               <div className="flex items-center">
                 <div className="relative w-full">
                   <input
                     type="text"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full opacity-50 cursor-not-allowed"
+                    className="!bg-gray-50 border !border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full opacity-50 cursor-not-allowed"
                     placeholder="Thinking Hard..."
                     value="Thinking Hard..."
                     disabled
@@ -408,7 +408,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                 </div>
                 <button
                   disabled
-                  className="p-2 text-green-500 cursor-not-allowed"
+                  className="p-2 !text-green-500 !cursor-not-allowed"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -424,7 +424,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
               <div className="flex items-center">
                 <button
                   onClick={handleRecordClick}
-                  className={`mr-2 focus:outline-none ${isRecording ? 'text-red-500' : isSttHovered ? 'text-blue-600' : 'text-gray-500'
+                  className={`!mr-2 !focus:outline-none ${isRecording ? '!text-red-500' : isSttHovered ? '!text-blue-600' : '!text-gray-500'
                     }`}
                   onMouseEnter={() => setIsSttHovered(true)}
                   onMouseLeave={() => setIsSttHovered(false)}
@@ -462,7 +462,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                 {/* Input field */}
                 <input
                   type="text"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-full"
+                  className="!bg-gray-50 border !border-gray-300 !text-gray-900 text-sm rounded-lg !focus:ring-blue-500 !focus:border-blue-500 block p-2.5 w-full"
                   placeholder="Write a message..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -472,7 +472,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                 {/* Send button */}
                 <button
                   onClick={sendNow}
-                  className={`ml-2 focus:outline-none ${isSendHovered ? 'text-blue-600' : 'text-gray-500'
+                  className={`!ml-2 !focus:outline-none ${isSendHovered ? '!text-blue-600' : '!text-gray-500'
                     }`}
                   onMouseEnter={() => setIsSendHovered(true)}
                   onMouseLeave={() => setIsSendHovered(false)}
