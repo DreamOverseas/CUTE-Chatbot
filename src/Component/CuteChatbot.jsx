@@ -2,8 +2,8 @@
  * Initial sample, for reading Vite's env mainly
  */
 
-// Tailwind
-import '../index.css'
+// Tailwind style import
+import './CuteChatbot.css'
 
 // src/Components/CuteChatbot.js
 import { useState, useEffect } from 'react';
