@@ -322,7 +322,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
         onClick={toggleChat}
         className="!bg-blue-500 !w-16 !h-16 !rounded-full flex items-center justify-center focus:outline-none transform hover:rotate-6 transition duration-300 fixed bottom-4 right-4 z-50"
       >
-        <ChatIcon alt="Chat Now" className="w-8 h-8 filter invert" />
+        <ChatIcon alt="Chat Now" className="w-8 h-8 fill-current !text-white" />
       </button>
 
       {/* Card Contents */}
@@ -376,21 +376,21 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
           </div>
 
           {/* Input areas */}
-          <div className="p-4 border-t !border-gray-200">
+          <div className="!p-4 !border-t !border-gray-200">
             {aiThinking ? (
-              <div className="flex items-center">
+              <div className="!flex !items-center">
                 <div className="relative w-full">
                   <input
                     type="text"
-                    className="!bg-gray-50 border !border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full opacity-50 cursor-not-allowed"
+                    className="!bg-gray-50 border !border-gray-300 text-gray-900 text-sm rounded-lg !p-2.5 !w-full opacity-50 !cursor-not-allowed"
                     placeholder="Thinking Hard..."
                     value="Thinking Hard..."
                     disabled
                   />
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <div className="!absolute !right-3 !top-1/2 !transform !-translate-y-1/2">
                     <svg
                       aria-hidden="true"
-                      className="w-5 h-5 text-gray-400 animate-spin fill-gray-600"
+                      className="!w-5 !h-5 !text-gray-400 !animate-spin !fill-gray-600"
                       viewBox="0 0 100 101"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -414,7 +414,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                     xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"
                     viewBox="0 0 24 24"
-                    className="ml-2 mr-2 w-6 h-6"
+                    className="!ml-2 !mr-2 !w-6 !h-6"
                   >
                     <path d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
                   </svg>
@@ -434,7 +434,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
                       viewBox="0 0 24 24"
-                      className="w-6 h-6"
+                      className="!w-6 !h-6"
                     >
                       <circle cx="12" cy="12" r="10" />
                       <circle cx="12" cy="12" r="5" fill="white" />
@@ -445,7 +445,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="!w-6 !h-6"
                     >
                       <circle
                         cx="12"
@@ -482,7 +482,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
                       viewBox="0 0 24 24"
-                      className="w-6 h-6"
+                      className="!w-6 !h-6"
                     >
                       <path d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
                     </svg>
@@ -492,7 +492,7 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="!w-6 !h-6"
                     >
                       <path
                         strokeLinecap="round"
