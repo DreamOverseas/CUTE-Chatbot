@@ -2,14 +2,16 @@ import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
 import path from 'node:path';
-import svgr from 'vite-plugin-svgr'
+import svgr from 'vite-plugin-svgr';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     tailwindcss(),
     react(),
-    svgr()
+    svgr(),
+    cssInjectedByJsPlugin()
   ],
   build: {
     minify: false,
@@ -17,8 +19,7 @@ export default defineConfig({
     lib: {
       entry: './src/Component/CuteChatbot.jsx', // Entry
       name: 'CuteChatbot',
-      fileName: 'CuteChatbot',
-      formats: ['es', 'cjs'],
+      fileName: (format) => `CuteChatbot.${format}.js`
     },
     rollupOptions: {
       external: ['react', 'react-dom'],

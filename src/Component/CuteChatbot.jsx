@@ -1,7 +1,3 @@
-/**
- * Initial sample, for reading Vite's env mainly
- */
-
 // Tailwind style import
 import './CuteChatbot.css'
 
@@ -48,7 +44,6 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
     let isMounted = true;
     const initializeChatbot = async () => {
       console.log("Your assistant is ready.");
-      console.log(`current props: openAI URL- ${openaiApiUrl} openAI Asst - ${openaiAsstId}`);
       try {
         setLoading(true);
 
