@@ -9,7 +9,7 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import LanguageSelector from './LanguageSelector';
 import { speakWithGoogle } from '../utils/GoogleTTS';
 
-import ChatIcon  from '../assets/chat.svg?react'
+import ChatIcon from '../assets/chat.svg?react'
 
 let useGoogleTTS = true; // configure if Google TTS is being used
 
@@ -139,10 +139,14 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
     }
   }, [interimResult, results]);
 
-  const handleRecordClick = () => {
+  const handleRecordStart = () => {
     if (!isRecording) {
       startSpeechToText();
-    } else {
+    }
+  };
+
+  const handleRecordStop = () => {
+    if (isRecording) {
       stopSpeechToText();
     }
   };
@@ -329,21 +333,21 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
       {open && (
         <div
           id="chat-card"
-          className={`fixed bottom-24 right-5 w-[600px] max-w-[90%] min-h-[75%] max-h-[75%] bg-white shadow-md rounded-lg flex flex-col transition-opacity duration-300 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'
+          className={`fixed bottom-24 !right-5 w-[600px] !max-w-[90%] !min-h-[75%] !max-h-[75%] !bg-white !shadow-md !rounded-lg !flex !flex-col transition-opacity duration-300 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'
             }`}
         >
           {/* Info msgs */}
           {loading ? (
             <p className="p-4">We are getting your CUTE Chatbot ready, please wait...</p>
           ) : (
-              <div className="flex items-center justify-between p-4">
-                <h3 className="text-xl !font-bold">
-                  CUTE Chatbot
-                </h3>
-                <div>
-                  <LanguageSelector currLang={currLang} setCurrLang={setCurrLang} />
-                </div>
+            <div className="flex items-center justify-between p-4">
+              <h3 className="text-xl !font-bold">
+                CUTE Chatbot
+              </h3>
+              <div>
+                <LanguageSelector currLang={currLang} setCurrLang={setCurrLang} />
               </div>
+            </div>
           )}
 
           {/* Chat messgaes display area */}
@@ -423,11 +427,17 @@ const CuteChatbot = ({ openai_api_url, openai_asst_id, openai_api_key, google_ap
             ) : (
               <div className="flex items-center">
                 <button
-                  onClick={handleRecordClick}
+                  onMouseDown={handleRecordStart}
+                  onMouseUp={handleRecordStop}
+                  onMouseLeave={() => {
+                    setIsSttHovered(false);
+                    handleRecordStop();
+                  }}
+                  onTouchStart={handleRecordStart}
+                  onTouchEnd={handleRecordStop}
+                  onMouseEnter={() => setIsSttHovered(true)}
                   className={`!mr-2 !focus:outline-none ${isRecording ? '!text-red-500' : isSttHovered ? '!text-blue-600' : '!text-gray-500'
                     }`}
-                  onMouseEnter={() => setIsSttHovered(true)}
-                  onMouseLeave={() => setIsSttHovered(false)}
                 >
                   {isRecording || isSttHovered ? (
                     <svg
