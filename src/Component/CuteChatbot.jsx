@@ -284,7 +284,10 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
     } catch (err) {
       console.error("Error sending message:", err);
     }
-    finally { setAiThinking(false); } // Stop Thinking
+    finally { 
+      setAiThinking(false);
+      setIsSendHovered(false);
+     } // Stop Thinking
   };
 
   const sendNow = () => {
