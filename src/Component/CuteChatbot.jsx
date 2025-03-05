@@ -9,7 +9,7 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import LanguageSelector from './LanguageSelector';
 import { speakWithGoogle } from '../utils/GoogleTTS';
 import ToggleVoiceBtn from './VoicedBtn';
-
+import VoiceLoader from './RecordLoader';
 import ChatIcon from '../assets/chat.svg?react'
 
 let useGoogleTTS = true; // configure if Google TTS is being used
@@ -354,7 +354,12 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
           )}
 
           {/* Chat messgaes display area */}
-          <div className="!flex-1 !overflow-y-auto !px-4">
+          <div className="!flex-1 !overflow-y-auto !px-4 !relative">
+            {isRecording && (
+              <div className="!absolute !inset-0 !flex !items-center !justify-center">
+                <VoiceLoader />
+              </div>
+            )}
             {(() => {
               const combined = [];
               const maxLength = Math.max(aiMessages.length, messages.length);
