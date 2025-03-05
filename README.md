@@ -6,7 +6,7 @@ This React component integrated an AI-powered chatbot into your application. Bui
 ## Requirements
 - React 19.0.0+
 - TailwindCSS 4.0+
-- Open AI API Key and ChatGPT Assistant ID
+- OpenAI API Key and ChatGPT Assistant ID
 - Google Cloud API Key
 
 ## Installation
@@ -69,5 +69,5 @@ This will create a bobble on the corner of your page and open a window for chat 
 MIT License
 
 ## Support
-This App is build initially for the Dream Overseas Group. For any issues or feature requests, please open an issue on the repository. We might be able to see that if our team is still there XD.
-
+Your API details suck as secret keys will not be stored, only for making API calls and its verification.
+This App is build initially for the Dream Overseas Group. For any issues or feature requests, please open an issue on the repository. We might be able to see that XD.
