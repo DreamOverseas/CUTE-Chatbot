@@ -25,6 +25,7 @@ import CuteChatbot from "@dreamoverseas/cute-chatbot";
 function App() {
   return (
     <CuteChatbot
+      nickname='<The chatbot name you wish to display>'
       openai_api_url='<normally https://api.openai.com>'
       openai_asst_id='<your ChatGPT Assistant ID>'
       openai_api_key='<your OpenAI Key>'
@@ -40,6 +41,7 @@ This will create a bobble on the corner of your page and open a window for chat 
 ## Props
 | Prop Name       | Type   | Description |
 | -------------- | ------ | ----------- |
+| `nickname` | string | The name displayed in the chatbot card |
 | `openai_api_url` | string | The API endpoint for OpenAI requests |
 | `openai_asst_id` | string | The assistant ID used for the chatbot |
 | `openai_api_key` | string | Your OpenAI API key |
