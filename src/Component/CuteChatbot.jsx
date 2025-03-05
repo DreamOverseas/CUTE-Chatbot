@@ -8,6 +8,7 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 
 import LanguageSelector from './LanguageSelector';
 import { speakWithGoogle } from '../utils/GoogleTTS';
+import ToggleVoiceBtn from './VoicedBtn';
 
 import ChatIcon from '../assets/chat.svg?react'
 
@@ -22,6 +23,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
   const [isVisible, setIsVisible] = useState(false);
   const [isSttHovered, setIsSttHovered] = useState(false);
   const [isSendHovered, setIsSendHovered] = useState(false);
+  const [doWeSpeak, setDoWeSpeak] = useState(true);
 
   const [currLang, setCurrLang] = useState('zh-CN'); // Language code in BCP-47 (e.g. en-US, zh-CN ...)
 
@@ -275,7 +277,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
           if (latestAiMessage) {
             aiResponse = latestAiMessage.content[0].text.value;
             setAiMessages((prev) => [...prev, aiResponse]);
-            letBotSpeak(aiResponse, currLang);
+            if (doWeSpeak) letBotSpeak(aiResponse, currLang); // If the speaking function is open, let bot speak
           }
         }
       }
@@ -324,7 +326,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
       {/* Button to open chat */}
       <button
         onClick={toggleChat}
-        className="!bg-blue-500 !w-16 !h-16 !rounded-full !flex !items-center !justify-center !focus:outline-none !transform !hover:rotate-6 !transition !duration-300 !fixed !bottom-4 !right-4 !z-50"
+        className="!bg-blue-500 !w-16 !h-16 !rounded-full !flex !items-center !justify-center focus:outline-none !transform hover:rotate-6 !transition !duration-300 !fixed !bottom-4 !right-4 !z-50"
       >
         <ChatIcon alt="Chat Now" className="w-8 h-8 !fill-current !text-white" />
       </button>
@@ -344,7 +346,8 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
               <h3 className="!text-xl !font-bold">
                 {nickname}
               </h3>
-              <div>
+              <div className="flex items-center">
+                <ToggleVoiceBtn speakOrNot={doWeSpeak} setSpeakOrNot={setDoWeSpeak} />
                 <LanguageSelector currLang={currLang} setCurrLang={setCurrLang} />
               </div>
             </div>
