@@ -275,7 +275,8 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
             .filter((msg) => msg.role === "assistant")[0];
 
           if (latestAiMessage) {
-            aiResponse = latestAiMessage.content[0].text.value;
+            const aiResponseRaw = latestAiMessage.content[0].text.value;
+            aiResponse = aiResponseRaw.trim().replace(/【\d+:\d+†source】$/, ''); // Remove possible source links like "【8:0†source】"
             setAiMessages((prev) => [...prev, aiResponse]);
             if (doWeSpeak) letBotSpeak(aiResponse, currLang); // If the speaking function is open, let bot speak
           }
