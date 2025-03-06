@@ -157,11 +157,16 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
 
   // Speaks out a text with current settings
   const letBotSpeak = (script, locale) => {
+    const scriptToRead = script
+    .replace(/https?:\/\/[^\s]+/g, '')// Remove https//
+    .replace(/[(){}[\]]/g, '')        // Remove all brackets
+    .replace(/:/g, ' ');             // All columns to white space
+
     if (useGoogleTTS && googleApiKey) {
-      speakWithGoogle(script, locale, googleApiKey)
+      speakWithGoogle(scriptToRead, locale, googleApiKey)
     }
     else {
-      speak({ text: script, voice: selectedVoice });
+      speak({ text: scriptToRead, voice: selectedVoice });
     }
   }
 
@@ -179,9 +184,9 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
       setMessages((prev) => [...prev, userMessage]);
 
       const userMessageWithPrompt = `${userMessage} 
-      If the retrieved documents do not explicitly mention the requested information, 
-      please use a soft and polite phrasing, such as 'I cannot provide specific information from my knowledge,' 
-      rather than directly stating that no information was found. 
+      Please answer my questions in structured locale ${currLang} language.
+      If no relevant information is found in the retrieved documents, state clearly: "I cannot provide specific details from my knowledge." 
+      Do not generate additional unrelated text.
       Also provide me website link from your knowledge base if you suggest me to visit.`;
 
       // Send message to OpenAI API
