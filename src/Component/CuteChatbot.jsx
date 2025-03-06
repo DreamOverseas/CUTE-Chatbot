@@ -178,6 +178,12 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
       // Add user message to chat
       setMessages((prev) => [...prev, userMessage]);
 
+      const userMessageWithPrompt = `${userMessage} 
+      If the retrieved documents do not explicitly mention the requested information, 
+      please use a soft and polite phrasing, such as 'I cannot provide specific information from my knowledge,' 
+      rather than directly stating that no information was found. 
+      Also provide me website link from your knowledge base if you suggest me to visit.`;
+
       // Send message to OpenAI API
       const messageResponse = await fetch(
         `${openaiApiUrl}/v1/threads/${threadId}/messages`,
@@ -190,7 +196,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
           },
           body: JSON.stringify({
             role: "user",
-            content: userMessage,
+            content: userMessageWithPrompt,
           }),
         }
       );
@@ -276,7 +282,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
 
           if (latestAiMessage) {
             const aiResponseRaw = latestAiMessage.content[0].text.value;
-            aiResponse = aiResponseRaw.trim().replace(/【\d+:\d+†source】$/, ''); // Remove possible source links like "【8:0†source】"
+            aiResponse = aiResponseRaw.replace(/\s*【\d+:\d+†source】/g, '').trim(); // Remove possible source links like "【8:0†source】"
             setAiMessages((prev) => [...prev, aiResponse]);
             if (doWeSpeak) letBotSpeak(aiResponse, currLang); // If the speaking function is open, let bot speak
           }
