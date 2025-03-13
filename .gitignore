@@ -25,3 +25,12 @@ dist-ssr
 
 #.env
 .env
+
+# Virtual Environments
+venv
+
+# Python Cache
+__pycache__
+
+# Database Files
+chroma_db

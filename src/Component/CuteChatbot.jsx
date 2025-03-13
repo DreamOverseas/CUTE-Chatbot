@@ -157,11 +157,16 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
 
   // Speaks out a text with current settings
   const letBotSpeak = (script, locale) => {
+    const scriptToRead = script
+    .replace(/https?:\/\/[^\s]+/g, '')// Remove https//
+    .replace(/[(){}[\]]/g, '')        // Remove all brackets
+    .replace(/:/g, ' ');             // All columns to white space
+
     if (useGoogleTTS && googleApiKey) {
-      speakWithGoogle(script, locale, googleApiKey)
+      speakWithGoogle(scriptToRead, locale, googleApiKey)
     }
     else {
-      speak({ text: script, voice: selectedVoice });
+      speak({ text: scriptToRead, voice: selectedVoice });
     }
   }
 
@@ -178,6 +183,12 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
       // Add user message to chat
       setMessages((prev) => [...prev, userMessage]);
 
+      const userMessageWithPrompt = `${userMessage} 
+      Please answer my questions in structured locale ${currLang} language.
+      If no relevant information is found in the retrieved documents, state clearly: "I cannot provide specific details from my knowledge." 
+      Do not generate additional unrelated text.
+      Also provide me website link from your knowledge base if you suggest me to visit.`;
+
       // Send message to OpenAI API
       const messageResponse = await fetch(
         `${openaiApiUrl}/v1/threads/${threadId}/messages`,
@@ -190,7 +201,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
           },
           body: JSON.stringify({
             role: "user",
-            content: userMessage,
+            content: userMessageWithPrompt,
           }),
         }
       );
@@ -275,7 +286,8 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
             .filter((msg) => msg.role === "assistant")[0];
 
           if (latestAiMessage) {
-            aiResponse = latestAiMessage.content[0].text.value;
+            const aiResponseRaw = latestAiMessage.content[0].text.value;
+            aiResponse = aiResponseRaw.replace(/\s*【\d+:\d+†source】/g, '').trim(); // Remove possible source links like "【8:0†source】"
             setAiMessages((prev) => [...prev, aiResponse]);
             if (doWeSpeak) letBotSpeak(aiResponse, currLang); // If the speaking function is open, let bot speak
           }
