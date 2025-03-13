@@ -28,3 +28,9 @@ dist-ssr
 
 # Virtual Environments
 venv
+
+# Python Cache
+__pycache__
+
+# Database Files
+chroma_db
