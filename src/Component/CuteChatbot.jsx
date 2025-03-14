@@ -168,9 +168,9 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
   // Speaks out a text with current settings
   const letBotSpeak = (script, locale) => {
     const scriptToRead = script
-    .replace(/https?:\/\/[^\s]+/g, '')// Remove https//
-    .replace(/[(){}[\]]/g, '')        // Remove all brackets
-    .replace(/:/g, ' ');             // All columns to white space
+      .replace(/https?:\/\/[^\s]+/g, '')// Remove https//
+      .replace(/[(){}[\]]/g, '')        // Remove all brackets
+      .replace(/:/g, ' ');             // All columns to white space
 
     if (useGoogleTTS && googleApiKey) {
       speakWithGoogle(scriptToRead, locale, googleApiKey)
@@ -238,7 +238,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
           ) : (
             <div className="!flex !items-center !justify-between !p-4">
               <h3 className="!text-xl !font-bold">
-                {nickname}
+                {nickname || "CUTE Chatbot"}
               </h3>
               <div className="flex items-center">
                 <ToggleVoiceBtn speakOrNot={doWeSpeak} setSpeakOrNot={setDoWeSpeak} />
