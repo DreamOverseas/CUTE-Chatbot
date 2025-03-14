@@ -54,7 +54,7 @@ This will create a bobble on the corner of your page and open a window for chat 
 2. **API Keys & Configuration**
    - You must provide valid API keys for `openai_api_key` and `google_api_key` to enable AI responses.
    - Make sure the `openai_api_url` is correctly set to the appropriate API endpoint.
-   - Make sure your Key is either read from .env or from your backend, not to expose to the public whenyour peoject is served to the public.
+   - Make sure your Key is either read from .env or from your backend, not to expose to the public when your peoject is served to the public.
 
 3. **Component Styling**
    - The default styles can be overridden using the `style` prop or by applying Tailwind classes.
