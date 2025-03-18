@@ -5,5 +5,4 @@ chromadb
 python-dotenv
 pydantic
 dotenv
-pathlib
 os

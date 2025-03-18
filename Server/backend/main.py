@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-from pathlib import Path
 from fastapi import FastAPI, HTTPException
 import chromadb
 from openai import OpenAI
@@ -15,16 +14,15 @@ PORT_NUM = 8000     # Port number used for this app to listen
 N_RES = 3           # Number of the closest result should we attach when running RAG
 
 # Load env from root directory (parent folder of Backend/)
-project_root = Path(__file__).resolve().parent.parent
-dotenv_path = project_root / '.env'
+dotenv_path = './.env'
 load_dotenv(dotenv_path=dotenv_path)
 # ========================================================
-openAI_key = os.getenv('VITE_OPENAI_API_KEY')
-openAI_URL = os.getenv('VITE_OPENAI_API_URL')
-openAI_model = os.getenv('VITE_OPENAI_MODEL')
-deepseek_key = os.getenv('VITE_DEEPSEEK_API_KEY')
-deepseek_URL = os.getenv('VITE_DEEPSEEK_API_URL')
-deepseek_model = os.getenv('VITE_DEEPSEEK_MODEL')
+openAI_key = os.getenv('OPENAI_API_KEY')
+openAI_URL = os.getenv('OPENAI_API_URL')
+openAI_model = os.getenv('OPENAI_MODEL')
+deepseek_key = os.getenv('DEEPSEEK_API_KEY')
+deepseek_URL = os.getenv('DEEPSEEK_API_URL')
+deepseek_model = os.getenv('DEEPSEEK_MODEL')
 
 # Initialise Chroma db with persist setup
 collection_name = "do_chatbot"
