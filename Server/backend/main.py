@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 from fastapi import FastAPI, HTTPException
 import chromadb
 from openai import OpenAI
@@ -10,11 +11,12 @@ from classes import ChatRequest, Document
 app = FastAPI()
 
 # Global Configs
-PORT_NUM = 8000     # Port number used for this app to listen
+PORT_NUM = 3053     # Port number used for this app to listen
 N_RES = 3           # Number of the closest result should we attach when running RAG
 
 # Load env from root directory (parent folder of Backend/)
-dotenv_path = './.env'
+project_root = Path(__file__).resolve().parent.parent
+dotenv_path = project_root / '.env'
 load_dotenv(dotenv_path=dotenv_path)
 # ========================================================
 openAI_key = os.getenv('OPENAI_API_KEY')
