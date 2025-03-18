@@ -11,20 +11,20 @@ from classes import ChatRequest, Document
 app = FastAPI()
 
 # Global Configs
-PORT_NUM = 8000     # Port number used for this app to listen
-N_RES = 3           # How many closest result should the db find
+PORT_NUM = 3053     # Port number used for this app to listen
+N_RES = 3           # Number of the closest result should we attach when running RAG
 
 # Load env from root directory (parent folder of Backend/)
 project_root = Path(__file__).resolve().parent.parent
 dotenv_path = project_root / '.env'
 load_dotenv(dotenv_path=dotenv_path)
 # ========================================================
-openAI_key = os.getenv('VITE_OPENAI_API_KEY')
-openAI_URL = os.getenv('VITE_OPENAI_API_URL')
-openAI_model = os.getenv('VITE_OPENAI_MODEL')
-deepseek_key = os.getenv('VITE_DEEPSEEK_API_KEY')
-deepseek_URL = os.getenv('VITE_DEEPSEEK_API_URL')
-deepseek_model = os.getenv('VITE_DEEPSEEK_MODEL')
+openAI_key = os.getenv('OPENAI_API_KEY')
+openAI_URL = os.getenv('OPENAI_API_URL')
+openAI_model = os.getenv('OPENAI_MODEL')
+deepseek_key = os.getenv('DEEPSEEK_API_KEY')
+deepseek_URL = os.getenv('DEEPSEEK_API_URL')
+deepseek_model = os.getenv('DEEPSEEK_MODEL')
 
 # Initialise Chroma db with persist setup
 collection_name = "do_chatbot"
@@ -43,6 +43,41 @@ def get_embedding(text):
         model='text-embedding-3-small'
     )
     return res.data[0].embedding
+
+
+# Receiving user question, construct context with RAG, then send it to LLM APIs
+@app.post("/chat")
+def chat_with_llm(request: ChatRequest):
+    if request.llm == "":
+        raise HTTPException(status_code=400, detail="Please pass the name (ChatGPT | Deepseek) in this field.")
+    if request.llm not in ["ChatGPT", "Deepseek"]:
+        raise HTTPException(status_code=400, detail="Currently, only ChatGPT and Deepseek are supported for LLM.")
+
+    question_embedding = get_embedding(request.user_question)
+    results = collection.query(query_embeddings=[question_embedding], n_results=N_RES)
+
+    context = "\n".join(results['documents'][0])
+
+    user_prompt = f"Context: {context}\n\nQuestion: {request.user_question}\nAnswer:"
+
+    print(f"[CUTE-RAG] Dealing with constructed message: ${user_prompt}")
+
+    if request.llm == "ChatGPT":
+        completion = openai_client.chat.completions.create(
+            model=openAI_model,
+            messages=[{"role": "user", "content": user_prompt}]
+        )
+        answer = completion.choices[0].message.content
+    elif request.llm == "Deepseek":
+        completion = deepseek_client.chat.completions.create(
+            model=deepseek_model,
+            messages=[{"role": "user", "content": user_prompt}]
+        )
+        answer = completion.choices[0].message.content
+    else:
+        raise HTTPException(status_code=400, detail="Currently, only ChatGPT and Deepseek are supported for LLM.")
+
+    return {"status": "success", "answer": answer}
 
 
 # Adding new one or update with name given

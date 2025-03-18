@@ -4,6 +4,6 @@ openai
 chromadb
 python-dotenv
 pydantic
-dotenv
 pathlib
+dotenv
 os

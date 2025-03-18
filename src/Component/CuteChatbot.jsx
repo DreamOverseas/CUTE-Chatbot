@@ -7,6 +7,7 @@ import useSpeechToText from 'react-hook-speech-to-text';
 import { useSpeechSynthesis } from 'react-speech-kit';
 
 import LanguageSelector from './LanguageSelector';
+import { sendMessageToAssistant, sendMessageToBackend } from '../utils/ConnectLLM';
 import { speakWithGoogle } from '../utils/GoogleTTS';
 import ToggleVoiceBtn from './VoicedBtn';
 import VoiceLoader from './RecordLoader';
@@ -15,7 +16,7 @@ import ChatIcon from '../assets/chat.svg?react'
 let useGoogleTTS = true; // configure if Google TTS is being used
 
 // eslint-disable-next-line react/prop-types
-const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key, google_api_key }) => {
+const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key, google_api_key, backend_url }) => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [aiMessages, setAiMessages] = useState(["您好，请问我有什么可以帮您的？ Good'ay. How can I help you today?"]);
@@ -35,6 +36,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
   const openaiAsstId = openai_asst_id;
   const openaiApiKey = openai_api_key;
   const googleApiKey = google_api_key;
+  const backendURL = backend_url;
 
   // const [assistant, setAssistant] = useState(null);
   const [threadId, setThreadId] = useState(null);
@@ -44,10 +46,18 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
 
   // Loading all nessesary data
   useEffect(() => {
-    if (!googleApiKey || !openaiApiKey || !openaiAsstId || !openaiApiUrl) return;
+    if (!googleApiKey) return;
+    if (!backendURL) {
+      if (!openaiApiUrl || !openaiApiKey || !openaiAsstId) return;
+    }
     let isMounted = true;
+
+    if (backendURL) { // For direct connect to backend
+      console.log("Your chatbot is ready to connect with server.");
+      return () => { isMounted = false };
+    }
+
     const initializeChatbot = async () => {
-      console.log("Your assistant is ready.");
       try {
         setLoading(true);
 
@@ -94,7 +104,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
           const threadData = await threadResponse.json();
           if (isMounted) setThreadId(threadData.id);
         }
-
+        console.log("Your assistant is ready.");
       } catch (err) {
         console.error("Error initializing chatbot:", err);
       } finally {
@@ -104,7 +114,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
 
     initializeChatbot();
     return () => { isMounted = false };
-  }, [googleApiKey, openaiApiKey, openaiApiUrl, openaiAsstId]);
+  }, [backendURL, googleApiKey, openaiApiKey, openaiApiUrl, openaiAsstId]);
 
   // Configs - USE react-hook-speech-to-text / Google Cloud API to TTS
   const {
@@ -158,9 +168,9 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
   // Speaks out a text with current settings
   const letBotSpeak = (script, locale) => {
     const scriptToRead = script
-    .replace(/https?:\/\/[^\s]+/g, '')// Remove https//
-    .replace(/[(){}[\]]/g, '')        // Remove all brackets
-    .replace(/:/g, ' ');             // All columns to white space
+      .replace(/https?:\/\/[^\s]+/g, '')// Remove https//
+      .replace(/[(){}[\]]/g, '')        // Remove all brackets
+      .replace(/:/g, ' ');             // All columns to white space
 
     if (useGoogleTTS && googleApiKey) {
       speakWithGoogle(scriptToRead, locale, googleApiKey)
@@ -170,141 +180,10 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
     }
   }
 
-  // Send message to Assistant
-  const sendMessageToAssistant = async (userMessage) => {
-    if (!threadId) {
-      console.error("No thread ID found, cannot send message.");
-      return;
-    }
-    // Start thinking
-    setAiThinking(true);
-
-    try {
-      // Add user message to chat
-      setMessages((prev) => [...prev, userMessage]);
-
-      const userMessageWithPrompt = `${userMessage} 
-      Please answer my questions in structured locale ${currLang} language.
-      If no relevant information is found in the retrieved documents, state clearly: "I cannot provide specific details from my knowledge." 
-      Do not generate additional unrelated text.
-      Also provide me website link from your knowledge base if you suggest me to visit.`;
-
-      // Send message to OpenAI API
-      const messageResponse = await fetch(
-        `${openaiApiUrl}/v1/threads/${threadId}/messages`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${openaiApiKey}`,
-            "Content-Type": "application/json",
-            "OpenAI-Beta": "assistants=v2",
-          },
-          body: JSON.stringify({
-            role: "user",
-            content: userMessageWithPrompt,
-          }),
-        }
-      );
-
-      if (!messageResponse.ok) {
-        throw new Error("Failed to send message");
-      }
-
-      // const messageData = await messageResponse.json();
-
-      // Run the Assistant
-      const runResponse = await fetch(
-        `${openaiApiUrl}/v1/threads/${threadId}/runs`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${openaiApiKey}`,
-            "Content-Type": "application/json",
-            "OpenAI-Beta": "assistants=v2",
-          },
-          body: JSON.stringify({
-            assistant_id: openaiAsstId,
-          }),
-        }
-      );
-
-      if (!runResponse.ok) {
-        throw new Error("Failed to run assistant");
-      }
-
-      const runData = await runResponse.json();
-
-      // Poll for completion
-      let runCompleted = false;
-      let aiResponse = "";
-
-      while (!runCompleted) {
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait 2 seconds
-
-        const runStatusResponse = await fetch(
-          `${openaiApiUrl}/v1/threads/${threadId}/runs/${runData.id}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${openaiApiKey}`,
-              "Content-Type": "application/json",
-              "OpenAI-Beta": "assistants=v2",
-            },
-          }
-        );
-
-        if (!runStatusResponse.ok) {
-          throw new Error("Failed to get run status");
-        }
-
-        const runStatusData = await runStatusResponse.json();
-
-        if (runStatusData.status === "completed") {
-          runCompleted = true;
-
-          // Fetch messages
-          const messagesResponse = await fetch(
-            `${openaiApiUrl}/v1/threads/${threadId}/messages`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${openaiApiKey}`,
-                "Content-Type": "application/json",
-                "OpenAI-Beta": "assistants=v2",
-              },
-            }
-          );
-
-          if (!messagesResponse.ok) {
-            throw new Error("Failed to fetch messages");
-          }
-
-          const messagesData = await messagesResponse.json();
-
-          // Extract the latest AI message
-          const latestAiMessage = messagesData.data
-            .filter((msg) => msg.role === "assistant")[0];
-
-          if (latestAiMessage) {
-            const aiResponseRaw = latestAiMessage.content[0].text.value;
-            aiResponse = aiResponseRaw.replace(/\s*【\d+:\d+†source】/g, '').trim(); // Remove possible source links like "【8:0†source】"
-            setAiMessages((prev) => [...prev, aiResponse]);
-            if (doWeSpeak) letBotSpeak(aiResponse, currLang); // If the speaking function is open, let bot speak
-          }
-        }
-      }
-    } catch (err) {
-      console.error("Error sending message:", err);
-    }
-    finally { 
-      setAiThinking(false);
-      setIsSendHovered(false);
-     } // Stop Thinking
-  };
-
   const sendNow = () => {
     if (!input) return;
-    sendMessageToAssistant(input.trim());
+    if (!backendURL) sendMessageToAssistant(input.trim(), openaiApiUrl, openaiApiKey, openaiAsstId, threadId, setAiThinking, setMessages, setAiMessages, setIsSendHovered, currLang, doWeSpeak, letBotSpeak);
+    else sendMessageToBackend(input.trim(), backendURL, setAiThinking, setMessages, setIsSendHovered);
     setInput("");
     if (isRecording) {
       stopSpeechToText();
@@ -359,7 +238,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
           ) : (
             <div className="!flex !items-center !justify-between !p-4">
               <h3 className="!text-xl !font-bold">
-                {nickname}
+                {nickname || "CUTE Chatbot"}
               </h3>
               <div className="flex items-center">
                 <ToggleVoiceBtn speakOrNot={doWeSpeak} setSpeakOrNot={setDoWeSpeak} />
