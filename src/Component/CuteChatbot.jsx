@@ -229,7 +229,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
       {open && (
         <div
           id="chat-card"
-          className={`!fixed !bottom-24 !right-5 !w-[600px] !max-w-[90%] !min-h-[75%] !max-h-[75%] !bg-white !shadow-md !rounded-lg !flex !flex-col !transition-opacity !duration-300 !ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'
+          className={`!z-10 !fixed !bottom-24 !right-5 !w-[600px] !max-w-[90%] !min-h-[75%] !max-h-[75%] !bg-white !shadow-md !rounded-lg !flex !flex-col !transition-opacity !duration-300 !ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'
             }`}
         >
           {/* Info msgs */}
