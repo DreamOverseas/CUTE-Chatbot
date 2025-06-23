@@ -1,0 +1,7 @@
+src/
+public/
+index.html
+.vscode/
+.git/
+.idea/
+node_modules/
