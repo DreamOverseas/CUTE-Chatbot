@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+// Tailwind style import
+import './CuteChatbot.css'
 
 const languages = [
   { label: 'English', code: 'en-US' },

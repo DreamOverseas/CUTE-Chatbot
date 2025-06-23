@@ -1,26 +1,36 @@
 {
-  "name": "cute-chatbot",
+  "name": "@dreamoverseas/cute-chatbot",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.1.5",
   "type": "module",
+  "main": "dist/CuteChatbot.js",
+  "module": "dist/CuteChatbot.es.js",
+  "types": "dist/CuteChatbot.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
   "dependencies": {
     "@google-cloud/text-to-speech": "^5.8.0",
-    "@tailwindcss/vite": "^4.0.7",
-    "bootstrap": "^5.3.3",
-    "bootstrap-icons": "^1.11.3",
+    "@tailwindcss/postcss": "^4.0.9",
+    "@tailwindcss/vite": "^4.0.9",
+    "autoprefixer": "^10.4.20",
     "fs": "^0.0.1-security",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "react-hook-speech-to-text": "^0.8.0",
     "react-speech-kit": "^3.0.1",
-    "tailwindcss": "^4.0.7",
-    "util": "^0.12.5"
+    "tailwindcss": "^4.0.9",
+    "util": "^0.12.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
@@ -32,23 +42,10 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
-    "vite": "^6.1.0"
-  },
-  "description": "\"Cool Util-ful Tech Entity\" Chatbot",
-  "main": "eslint.config.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DreamOverseas/CUTE-Chatbot.git#main"
-  },
-  "keywords": [
-    "chatbot",
-    "react",
-    "openai"
-  ],
-  "author": "Hanny Joshua",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/DreamOverseas/CUTE-Chatbot/issues"
-  },
-  "homepage": "https://github.com/DreamOverseas/CUTE-Chatbot/tree/main#readme"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "vite": "^6.1.0",
+    "vite-plugin-css-injected-by-js": "^3.5.2",
+    "vite-plugin-svgr": "^4.3.0"
+  }
 }

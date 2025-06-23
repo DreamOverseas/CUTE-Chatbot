@@ -1,5 +1,4 @@
-const googleApiKey = import.meta.env.VITE_GOOGLE_API;
-
+// Global Var to store audio states
 let currentAudio = null;
 
 /**
@@ -19,7 +18,7 @@ export function stopGoogleTTS() {
  * @param {string} text - Script to read-out
  * @param {string} locale - BCP-47 language code, like 'en-AU','zh-CN', 'ja-JP' ...
  */
-export async function speakWithGoogle(text, locale) {
+export async function speakWithGoogle(text, locale, googleApiKey) {
     stopGoogleTTS();
 
   const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${googleApiKey}`;
@@ -55,7 +54,6 @@ export async function speakWithGoogle(text, locale) {
     console.error("Unknown Error with speakWithGoogle()", error);
   }
 }
-
 
 export default {speakWithGoogle , stopGoogleTTS};
 
