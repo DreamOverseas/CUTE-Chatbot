@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react'
 import reactLogo from '/react.svg'
 import viteLogo from '/vite.svg'
@@ -43,14 +44,20 @@ function App() {
         </p>
       </div>
 
+      <CuteChatbot 
+        nickname="CUTE Chatbot"
+        google_api_key={googleApiKey}
+        backend_url={'https://server.ai-knowledge.do360.com/chat'}
+      />
 
+{/* 
       <CuteChatbot 
         nickname="CUTE Chatbot"
         openai_api_url={openaiApiUrl}
         openai_asst_id={openaiAsstId}
         openai_api_key={openaiApiKey}
         google_api_key={googleApiKey}
-      />
+      /> */}
     </>
   )
 }

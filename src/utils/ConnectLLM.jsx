@@ -132,6 +132,45 @@ export async function sendMessageToAssistant(userMessage, openaiApiUrl, openaiAp
 
 
 // Send/Get message from the backend url given in /chat
-export async function sendMessageToBackend(userMessage, backendURL, setAiThinking, setMessages, setIsSendHovered) {
-  console.log(userMessage, backendURL, setAiThinking, setMessages, setIsSendHovered);
+export async function sendMessageToBackend(userMessage, backendURL, setAiThinking, setMessages, setAiMessages, setIsSendHovered, currLang, doWeSpeak, letBotSpeak) {
+  console.log("Sending message to backend.");
+  setAiThinking(true);
+
+  try {
+    // Add user message to chat
+    setMessages((prev) => [...prev, userMessage]);
+
+    // Send message to OpenAI API
+    const messageResponse = await fetch(backendURL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          // llm: "ChatGPT",
+          question: userMessage,
+        }),
+      }
+    );
+
+    if (!messageResponse.ok) {
+      throw new Error("Failed to send message");
+    }
+
+    const messageData = await messageResponse.json()
+
+    if (messageData) {
+      const aiResponseRaw = messageData.answer;
+      const aiResponse = aiResponseRaw.replace(/\s*【\d+:\d+†source】/g, '').trim(); // Remove possible source links like "【8:0†source】"
+      setAiMessages((prev) => [...prev, aiResponse]);
+      if (doWeSpeak) letBotSpeak(aiResponse, currLang); // If the speaking function is open, let bot speak
+    }
+  } catch (err) {
+    console.error("Error sending message to Backend:", err);
+  }
+  finally { 
+    setAiThinking(false);
+    setIsSendHovered(false);
+   } // Stop Thinking
 }

@@ -41,7 +41,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
   // const [assistant, setAssistant] = useState(null);
   const [threadId, setThreadId] = useState(null);
   // const [assistant, setAssistant] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [aiThinking, setAiThinking] = useState(false);
 
   // Loading all nessesary data
@@ -53,34 +53,14 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
     let isMounted = true;
 
     if (backendURL) { // For direct connect to backend
-      console.log("Your chatbot is ready to connect with server.");
+      setLoading(false);
+      console.log("Your chatbot is ready to connect with the server.");
       return () => { isMounted = false };
     }
 
     const initializeChatbot = async () => {
       try {
         setLoading(true);
-
-        // Assistant Detail - CUTE Chatbot (formerly DO Copilot) TODO: Commented for API Update
-        // const assistantResponse = await fetch(
-        //   `${openaiApiUrl}/v1/assistants/${openaiAsstId}`,
-        //   {
-        //     method: "GET",
-        //     headers: {
-        //       "Authorization": `Bearer ${openaiApiKey}`,
-        //       "Content-Type": "application/json",
-        //       "OpenAI-Beta": "assistants=v2",
-        //     },
-        //   }
-        // );
-
-        // if (!assistantResponse.ok) {
-        //   console.error("Assistent API response error.");
-        //   throw new Error("Failed to fetch assistant details");
-        // }
-
-        // const assistantData = await assistantResponse.json();
-        // if (isMounted) setAssistant(assistantData);
 
         // New Thread
         const threadResponse = await fetch(
@@ -104,11 +84,11 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
           const threadData = await threadResponse.json();
           if (isMounted) setThreadId(threadData.id);
         }
-        console.log("Your assistant is ready.");
       } catch (err) {
         console.error("Error initializing chatbot:", err);
       } finally {
         setLoading(false);
+        console.log("Your assistant is ready.");
       }
     };
 
@@ -183,7 +163,7 @@ const CuteChatbot = ({ nickname, openai_api_url, openai_asst_id, openai_api_key,
   const sendNow = () => {
     if (!input) return;
     if (!backendURL) sendMessageToAssistant(input.trim(), openaiApiUrl, openaiApiKey, openaiAsstId, threadId, setAiThinking, setMessages, setAiMessages, setIsSendHovered, currLang, doWeSpeak, letBotSpeak);
-    else sendMessageToBackend(input.trim(), backendURL, setAiThinking, setMessages, setIsSendHovered);
+    else sendMessageToBackend(input.trim(), backendURL, setAiThinking, setMessages, setAiMessages, setIsSendHovered, currLang, doWeSpeak, letBotSpeak);
     setInput("");
     if (isRecording) {
       stopSpeechToText();
