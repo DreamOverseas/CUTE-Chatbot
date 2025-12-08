@@ -1,11 +1,17 @@
 {
   "name": "@dreamoverseas/cute-chatbot",
   "private": false,
-  "version": "2.1.0",
+  "version": "2.1.2",
   "type": "module",
-  "main": "dist/CuteChatbot.js",
+  "main": "dist/CuteChatbot.umd.js",
   "module": "dist/CuteChatbot.es.js",
   "types": "dist/CuteChatbot.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/CuteChatbot.es.js",
+      "require": "./dist/CuteChatbot.umd.js"
+    }
+  },
   "files": [
     "dist"
   ],
